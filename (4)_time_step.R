@@ -169,7 +169,28 @@ for (increments_number in 1:num_time_steps){
            }
          }
       }
+      
+      #pulling dose 2 from unvaccinated when more dose 2 administered than individuals available in dose 1
+      #these negatives have resulted because we do not know vaccine delivery by type and date
+      #we have assumed uniform vaccination by vaccine type (in (1)_simulate_setting) where really J&J doses were donated
+      #at a later date then most other doses
+      if(nrow(next_state[round(next_state$pop)<0,])>0 & date_now<max(vaccination_history_TRUE$date)){
+        to_correct = next_state[round(next_state$pop)<0,] %>%
+          mutate(dose = dose - 1) %>%
+          group_by(class,age_group,dose,risk_group) %>%
+          summarise(correction = sum(pop), .groups = "keep")
         
+        next_state = next_state %>% 
+          left_join(to_correct,by=c('class','age_group','dose','risk_group')) %>%
+          mutate(pop = case_when(
+            is.na(correction) == FALSE ~ pop + correction,
+            TRUE ~ pop)) %>%
+          select(-correction)
+        
+        next_state$pop[round(next_state$pop)<0] = 0
+      }
+        
+          
        
       #### BOOSTER TO PREVIOUS PRIMARY
       #NB: using '8' as a flag for a booster to a previously primary delivered individaul

@@ -193,63 +193,79 @@ rm(workshop, workshop_cases)
 workshop <- readr::read_csv("https://raw.githubusercontent.com/govex/COVID-19/master/data_tables/vaccine_data/global_data/time_series_covid19_vaccine_global.csv")
 workshop = workshop[workshop$'Country_Region' == setting_long,]
 
+#<intermission to correct where doses admin < people with at least one dose in June 2022 for a week >
+workshop_correct = workshop[workshop$Doses_admin<workshop$People_at_least_one_dose,]
+workshop_correct$People_at_least_one_dose = workshop$People_at_least_one_dose[workshop$Date == (min(workshop_correct$Date) -1)]
+workshop = workshop[! workshop$Doses_admin<workshop$People_at_least_one_dose,]
+workshop = rbind(workshop,workshop_correct)
+workshop = workshop %>% arrange(Date)
+if(nrow(workshop[workshop$Doses_admin<workshop$People_at_least_one_dose,])>0){stop('vaccination data is flawed')}
+#<fin>
+
 vaccination_history = workshop %>%
-  select(Date,People_partially_vaccinated,People_fully_vaccinated) %>%
   rename(date = Date, 
-         partial = People_partially_vaccinated,
-         full = People_fully_vaccinated) %>%
+         dose_one = People_at_least_one_dose) %>%
+  mutate(dose_two = Doses_admin - dose_one ) %>% #ASSUMPTION: no boosters delivered in SLE (only 0.1% booster coverage at 23/09/22)
+  select(date,dose_one,dose_two) %>%
   pivot_longer(
-    cols='partial':'full',
+    cols='dose_one':'dose_two',
     names_to='dose_charac',
     values_to = 'num'
-  )
+  ) %>%
+  mutate(dose = case_when(
+    dose_charac == 'dose_one' ~ 1,
+    dose_charac == 'dose_two' ~ 2
+  )) %>%
+  select(-dose_charac)
 
-#LIMITATION: some manual processing here due to lack of data using:https://mohs.gov.sl/download/sl_-covax-esmf-sierra-leone-final_june-22-2021-updated-docx/
+#LIMITATION: some manual processing here due to using:https://africacdc.org/covid-19-vaccination/
 setting_vaccine <- read.csv("1_inputs/vaccine_setting_history.csv",header=TRUE)
-setting_vaccine <- setting_vaccine[setting_vaccine$setting == setting,]
+setting_vaccine$last_update = as.Date(setting_vaccine$last_update,format = '%d/%m/%Y')
+setting_vaccine <- setting_vaccine %>%
+  filter(setting == setting &
+           last_update == max(setting_vaccine$last_update))
 
 if ("Johnson & Johnson" %in% unique(setting_vaccine$vaccine_type)){
   setting_vaccine <- setting_vaccine %>%
     mutate(
-      full = case_when(
+      dose_one = case_when(
         vaccine_type == "Johnson & Johnson" ~ 2*doses/(sum(setting_vaccine$doses)+setting_vaccine$doses[setting_vaccine$vaccine_type == "Johnson & Johnson"]),
         vaccine_type != "Johnson & Johnson" ~ doses/(sum(setting_vaccine$doses)+setting_vaccine$doses[setting_vaccine$vaccine_type == "Johnson & Johnson"])
           ),
-      partial = case_when(
+      dose_two = case_when(
         vaccine_type == "Johnson & Johnson" ~ 0,
         vaccine_type != "Johnson & Johnson" ~ doses/(sum(setting_vaccine$doses)- setting_vaccine$doses[setting_vaccine$vaccine_type == "Johnson & Johnson"])
       ))
   
 } else {
   setting_vaccine <- setting_vaccine %>%
-    mutate(full=doses/sum(setting_vaccine$doses),
-           partial=doses/sum(setting_vaccine$doses))
+    mutate(dose_one=doses/sum(setting_vaccine$doses),
+           dose_two=doses/sum(setting_vaccine$doses))
 }
 
 setting_vaccine_2 <- setting_vaccine %>%
-  select(vaccine_type,full,partial) %>%
+  select(vaccine_type,dose_two,dose_one) %>%
   pivot_longer(
-    cols='full':'partial',
+    cols='dose_one':'dose_two',
     names_to='dose_charac',
     values_to = 'prop'
-  )
+  ) %>%
+  mutate(dose = case_when(
+    dose_charac == 'dose_one' ~ 1,
+    dose_charac == 'dose_two' ~ 2
+  )) %>%
+  select(-dose_charac)
 
 vaccination_history_2 <- vaccination_history %>%
-  left_join(setting_vaccine_2, by = "dose_charac") %>%
-  select(date, vaccine_type, dose_charac, num, prop) %>%
+  left_join(setting_vaccine_2, by = "dose") %>%
+  select(date, vaccine_type, dose, num, prop) %>%
   mutate(coverage_this_date_num = round(num*prop),
          coverage_this_date = 100 * coverage_this_date_num / sum(pop)) %>%
-  group_by(dose_charac,vaccine_type) %>%
+  group_by(dose,vaccine_type) %>%
   arrange(date) %>%
   mutate(doses_delivered_this_date = coverage_this_date_num - lag(coverage_this_date_num))
 
 vaccination_history_3 <- vaccination_history_2 %>%
-  mutate(dose = case_when(
-    vaccine_type == 'Johnson & Johnson' & dose_charac == 'full' ~ 1,
-    vaccine_type == 'Johnson & Johnson' & dose_charac == 'partial' ~ 0,
-    dose_charac == 'full' ~ 2,
-    dose_charac == 'partial' ~ 1
-  ))  %>%
   mutate(vaccine_mode = case_when(
     vaccine_type == 'Pfizer' ~ 'mRNA',
     vaccine_type == 'Moderna' ~ 'mRNA',
@@ -257,8 +273,7 @@ vaccination_history_3 <- vaccination_history_2 %>%
     vaccine_type == 'Sinopharm' ~ 'viral',
     vaccine_type == 'Sinovac' ~ 'viral',
     vaccine_type == 'Johnson & Johnson' ~ 'viral'
-  )) %>%
-  filter(! dose == 0)
+  )) 
 vaccination_history_3 <- na.omit(vaccination_history_3) # nrows = 1365-5 = 1360
 
 vaccination_history_POP <- vaccination_history_3 %>%
