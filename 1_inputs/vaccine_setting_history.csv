@@ -1,6 +1,7 @@
 setting,vaccine_type,doses,last_update,update_source
-PNG,Johnson & Johnson,126406,27/12/2021,PNG weekly epi report
-PNG,AstraZeneca,237875,27/12/2021,PNG weekly epi report
-PNG,Sinopharm,19127,27/12/2021,PNG weekly epi report
 SLE,AstraZeneca,138000,22/06/2021,COVAX doco
 SLE,Sinopharm,200000,22/06/2021,COVAX doco
+SLE,AstraZeneca,1308000,23/09/2022,African CDC (https://africacdc.org/covid-19-vaccination/)
+SLE,Sinopharm,440000,23/09/2022,African CDC (https://africacdc.org/covid-19-vaccination/)
+SLE,Pfizer,1524510,23/09/2022,African CDC (https://africacdc.org/covid-19-vaccination/)
+SLE,Johnson & Johnson,2835600,23/09/2022,African CDC (https://africacdc.org/covid-19-vaccination/)
