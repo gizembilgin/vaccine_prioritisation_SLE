@@ -1,0 +1,14 @@
+setting,measure,age_start,age_group,seroprev,LB,UB,source
+PNG,prop_cases,0,0 to 5,0.032,,,Papua (Indoensian district) case distribution from Indonesian government website
+PNG,prop_cases,6,6 to 18,0.1,,,Papua (Indoensian district) case distribution from Indonesian government website
+PNG,prop_cases,19,19 to 30,0.287,,,Papua (Indoensian district) case distribution from Indonesian government website
+PNG,prop_cases,31,31 to 45,0.327,,,Papua (Indoensian district) case distribution from Indonesian government website
+PNG,prop_cases,46,46 to 59,0.19,,,Papua (Indoensian district) case distribution from Indonesian government website
+PNG,prop_cases,60,60 to 100,0.063,,,Papua (Indoensian district) case distribution from Indonesian government website
+PNG,seroprev,0,overall,9.9,,,"Megasari et al, 2021"
+SLE,seroprev,0,0 to 9,1.7,0.2,3.2,"Barrie et al., 2021"
+SLE,seroprev,10,10 to 19,2.6,0.8,4.2,"Barrie et al., 2021"
+SLE,seroprev,20,20 to 39,1.2,0.2,2.3,"Barrie et al., 2021"
+SLE,seroprev,40,40 to 59,4.4,2.4,6.4,"Barrie et al., 2021"
+SLE,seroprev,60,60 to 100,3.6,2.1,6.5,"Barrie et al., 2021"
+SLE,seroprev,0,overall,2.6,1.9,3.4,"Barrie et al., 2021"

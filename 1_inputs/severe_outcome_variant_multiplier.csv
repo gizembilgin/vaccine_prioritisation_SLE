@@ -1,0 +1,13 @@
+variant,outcome_long,outcome,multiplier,lower_est,upper_est,source
+alpha,risk of hospitalisation,hosp,1.53,1.49,1.57,Lin et al. 2021
+alpha,risk of ICU admission,ICU,1.74,1.35,2.09,Lin et al. 2021
+alpha,risk of mortality,death,1.37,1.15,1.6,Lin et al. 2021
+beta,risk of hospitalisation,hosp,2.16,1.19,3.14,Lin et al. 2021
+beta,risk of ICU admission,ICU,2.23,1.31,3.15,Lin et al. 2021
+beta,risk of mortality,death,1.5,1.26,1.74,Lin et al. 2021
+gamma,risk of hospitalisation,hosp,1.71,0.9,2.52,Lin et al. 2021
+gamma,risk of ICU admission,ICU,1.94,1.71,2.18,Lin et al. 2021
+gamma,risk of mortality,death,1.06,0.17,1.96,Lin et al. 2021
+delta,risk of hospitalisation,hosp,2.08,1.77,2.39,Lin et al. 2021
+delta,risk of ICU admission,ICU,3.35,2.5,4.2,Lin et al. 2021
+delta,risk of mortality,death,2.33,1.45,3.21,Lin et al. 2021

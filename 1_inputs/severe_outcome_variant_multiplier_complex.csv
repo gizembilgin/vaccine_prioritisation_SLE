@@ -1,0 +1,3 @@
+variant,outcome_long,outcome,multiplier,lower_est,upper_est,source
+omicron,reduced hospitalisation rate (any attendance),hosp,0.775,0.75,0.8,imperial college
+omicron,reduced hospitalisation rate for hospitalisations lasting 1 day or longer,hosp_long,0.575,0.55,0.6,imperial college

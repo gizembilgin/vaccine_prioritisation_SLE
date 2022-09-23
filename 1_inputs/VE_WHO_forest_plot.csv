@@ -1,0 +1,118 @@
+strain,vaccine_type,primary_if_booster,dose,outcome,actual measure,VE,lower_est,upper_est,reference,study published,study location,cohort,study type,week_start,week_end,maximum duration of follow-up,notes
+delta,AstraZeneca,,1,any_infection,documented infection,46,35,55,"Pouwels et al., 2021",14/10/2021,UK,"358,983 individuals",prospective cohort,2,28,28 weeks,"largest avaliable study in general pop, aligns well with Indian general pop and Thailand general pop est"
+delta,AstraZeneca,,2,any_infection,documented infection,67,62,71,"Pouwels et al., 2021",14/10/2021,UK,"358,983 individuals",prospective cohort,2,28,28 weeks,"largest avaliable study in general pop, aligns well with Indian general pop and Thailand general pop est"
+delta,AstraZeneca,,1,death,death,86.9,77.2,92.4,"Andrews et al., 2022",12/01/2022,England,,,2,8,,largest avaliable study
+delta,AstraZeneca,,2,death,death,94.1,91.8,95.8,"Andrews et al., 2022",,,,,2,8,,14-63 days post vaccination
+delta,AstraZeneca,,1,severe_disease,hospitalisation,80.7,78,83,"Andrews et al., 2022",,,,,2,8,,largest avaliable study
+delta,AstraZeneca,,2,severe_disease,hospitalisation,95.2,94.6,95.6,"Andrews et al., 2022",,,,,2,8,,14-63 days post vaccination
+delta,AstraZeneca,,1,symptomatic_disease,symptomatic disease,45.1,43.4,46.7,"Andrews et al., 2022",,,,,2,8,,largest avaliable study
+delta,AstraZeneca,,2,symptomatic_disease,symptomatic disease,66.7,66.3,67,"Andrews et al., 2022",,,,,2,8,,14-63 days post vaccination
+delta,Johnson & Johnson,,1,any_infection,documented infection,78,73,82,"Polinski et al., 2021",,,,,2,14,,"one of two studies in the general pop, US, retrospective cohort (preferenced over one other study with a test-negative design)"
+delta,Johnson & Johnson,,1,death,death,82,74,89,Bekker et al. 2021,,,,,4,16,,"HCW, only avaliable study"
+delta,Johnson & Johnson,,1,severe_disease,hospitalisation,85,73,91,"Polinski et al., 2021",,,,,2,14,,"one of two studies in the general pop, US, retrospective cohort (preferenced over one other study with a test-negative design)"
+delta,Johnson & Johnson,,1,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+delta,Johnson & Johnson,Johnson & Johnson,2,any_infection,,86.3,63.5,94.9,"Voko et al., 2022",18/04/2022,Hungary,"6,193,552 aged 18-64",,2,17,20 weeks,4 cases
+delta,Johnson & Johnson,,2,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+delta,Johnson & Johnson,Sinopharm,3,severe_disease,hospitalisation,95.3,88.7,98,"Voko et al., 2022",20/04/2022,Hungary,"6,193,552 aged 18-66",,2,17,20 weeks,5 cases
+delta,Johnson & Johnson,Sinopharm,3,any_infection,,78.1,84.7,81,"Voko et al., 2022",21/04/2022,Hungary,"6,193,552 aged 18-67",,2,17,20 weeks,187 cases
+delta,Johnson & Johnson,Sinopharm,3,death,,95.8,70,99.4,"Voko et al., 2022",22/04/2022,Hungary,"6,193,552 aged 18-68",,2,17,20 weeks,1 case only
+delta,Moderna,,1,any_infection,documented infection,77,60.7,86.5,"Bruxvoort et al., 2021",,,,,2,6.5,,"best aligns with other estimates in forest plot, general US population"
+delta,Moderna,,2,any_infection,documented infection,88,86.8,89.1,"Florea et al., 2021",,,,,2,13,,"US general population, prospective cohort, aligns well with other VE in forest plot"
+delta,Moderna,,1,death,,,,,none currently avaliable,,,,,,,,
+delta,Moderna,,2,death,,,,,none currently avaliable,,,,,,,,
+delta,Moderna,,1,severe_disease,hospitalisation,81,76,85,"Nasreen et al., 2022",,,,,1,8,,"Canadian general population, aligns well with all other studies, larger so smaller CI, provides first AND second dose estimates"
+delta,Moderna,,2,severe_disease,hospitalisation,98,93,100,"Nasreen et al., 2022",,,,,1,8,,
+delta,Moderna,,1,symptomatic_disease,symptomatic disease,64.9,64,65.7,"Andrews et al., 2022",,,,,2,8,,aligns with Nasreen et al. estimates (first dose)
+delta,Moderna,,2,symptomatic_disease,symptomatic disease,93.8,93.4,94.1,"Andrews et al., 2022",,,,,2,8,,"aligns with all other second dose estimates, biggest cohort"
+delta,Pfizer,,1,any_infection,documented infection,57,50,63,"Pouwels et al., 2021",14/10/2021,UK,"358,983 individuals",prospective cohort,,,28 weeks,"largest avaliable in the general pop, aligns well with other studies (specific age groups or index cases)"
+delta,Pfizer,,2,any_infection,documented infection,80,77,83,"Pouwels et al., 2021",14/10/2021,UK,"358,983 individuals",prospective cohort,,,28 weeks,
+delta,Pfizer,,1,death,death,88.6,78.8,93.9,"Andrews et al., 2022",,,,,,,,largest avaliable study
+delta,Pfizer,,2,death,death,98.2,95.9,99.2,"Andrews et al., 2022",,,,,,,,14-63 days post vaccination
+delta,Pfizer,,1,severe_disease,hospitalisation,91.1,89.7,92.3,"Andrews et al., 2022",,,,,,,,largest avaliable in general pop
+delta,Pfizer,,2,severe_disease,hospitalisation,98.4,97.9,98.8,"Andrews et al., 2022",,,,,,,,aligns with other included studies
+delta,Pfizer,,1,symptomatic_disease,symptomatic disease,51.2,50.7,51.7,"Andrews et al., 2022",,,,,,,,largest avaliable in general pop and aligns with other presented values
+delta,Pfizer,,2,symptomatic_disease,symptomatic disease,89.8,89.6,90,"Andrews et al., 2022",,,,,,,,aligns with other included studies
+delta,Sinopharm,,1,any_infection,documented infection,22.6,20,25,"Rearte et al., 2022",,,,,,,,"listed as BBIBP-CorV, ~250,000 test-negative case control, mix of alpha, gamma and delta variants but best available"
+delta,Sinopharm,,2,any_infection,documented infection,43.6,42,45,"Rearte et al., 2022",,,,,,,,"listed as BBIBP-CorV, ~250,000 test-negative case control, mix of alpha, gamma and delta variants but best available"
+delta,Sinopharm,,1,death,,70.4,68.1,72.8,"Rearte et al., 2022",,,,,,,,"listed as BBIBP-CorV, ~250,000 test-negative case control, mix of alpha, gamma and delta variants but best available"
+delta,Sinopharm,,2,death,,85,84,86,"Rearte et al., 2022",,,,,,,,"listed as BBIBP-CorV, ~250,000 test-negative case control, mix of alpha, gamma and delta variants but best available"
+delta,Sinopharm,,1,severe_disease,severe hospitalisation,51,40,60,"Belayachi et al., 2021",,,,,,,,"only study avaliable, includes alpha and WT circulation"
+delta,Sinopharm,,2,severe_disease,severe hospitalisation,88,84,91,"Belayachi et al., 2021",,,,,,,,"only study avaliable, includes alpha and WT circulation"
+delta,Sinopharm,,1,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+delta,Sinopharm,,2,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+delta,Sinovac,,1,any_infection,,,,,none currently avaliable,,,,,,,,
+delta,Sinovac,,2,any_infection,documented infection,74.4,70.4,77.8,none currently avaliable,,,,,,,,"Malaysian study with ~230,000, aligns with one other study"
+delta,Sinovac,,1,death,,,,,none currently avaliable,,,,,,,,
+delta,Sinovac,,2,death,,,,,none currently avaliable,,,,,,,,
+delta,Sinovac,,1,severe_disease,,,,,none currently avaliable,,,,,,,,
+delta,Sinovac,,2,severe_disease,hospitalisation,91.3,88.1,93.6,none currently avaliable,,,,,,,,"Chile 6-16 years, only study avaliable but ~2 million children"
+delta,Sinovac,,1,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+delta,Sinovac,,2,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+omicron,AstraZeneca,,1,any_infection,,,,,none currently avaliable,,,,,,,,
+omicron,AstraZeneca,,2,any_infection,,,,,none currently avaliable,,,,,,,,
+omicron,AstraZeneca,,1,death,,,,,none currently avaliable,,,,,,,,
+omicron,AstraZeneca,,2,death,,,,,none currently avaliable,,,,,,,,
+omicron,AstraZeneca,,1,severe_disease,,,,,none currently avaliable,,,,,,,,
+omicron,AstraZeneca,,2,severe_disease,,,,,none currently avaliable,,,,,,,,
+omicron,AstraZeneca,,1,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+omicron,AstraZeneca,,2,symptomatic_disease,,49.8,40.7,57.5,"UKHSA/Andrews et al., 2022",,,,,,,,only 'omicron specific' study; heavy waning in 25+ weeks estimate provided (around 0 VE)
+omicron,Johnson & Johnson,,1,any_infection,,,,,none currently avaliable,,,,,,,,
+omicron,Johnson & Johnson,,1,death,,,,,none currently avaliable,,,,,,,,
+omicron,Johnson & Johnson,,1,severe_disease,hospitalisation,31,21,40,"Natarajan et al., 2022",,,,,,,,only avaliable J&J omicron estimate at current time
+omicron,Johnson & Johnson,,1,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+omicron,Johnson & Johnson,Johnson & Johnson,2,severe_disease,hospitalisation,84,67,92,"Gray et al., 2021",,South Africa,"69,092 HCW",test negative case control,,,14-27 days,
+omicron,Johnson & Johnson,,2,any_infection,documented infection,48,42.5,53.7,Monge et al.,,Spain,"2,083,857 adults 40+",retrospective cohort,,,3 weeks,J&J with mRNA booster!!
+omicron,Johnson & Johnson,,2,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+omicron,Johnson & Johnson,,2,death,,,,,none currently avaliable,,,,,,,,
+omicron,Moderna,,1,any_infection,,,,,none currently avaliable,,,,,,,,
+omicron,Moderna,,2,any_infection,documented infection,37.9,34.4,41.2,"Hansen et al., 2021",,,,,,,,retrospective cohort with 3 million 12+
+omicron,Moderna,,1,death,,,,,none currently avaliable,,,,,,,,
+omicron,Moderna,,2,death,,,,,none currently avaliable,,,,,,,,
+omicron,Moderna,,1,severe_disease,,,,,none currently avaliable,,,,,,,,
+omicron,Moderna,,2,severe_disease,hospitalisation,72,,,"Baum et al., 2022",,,,,,,,retrospective cohort of adults aged 70+ hence don't really trust the CI
+omicron,Moderna,,1,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+omicron,Moderna,,2,symptomatic_disease,,76,72,79,"UKHSA/Andrews et al., 2022",,,,,,,,
+omicron,Moderna,Pfizer,3,symptomatic_disease,,74.7,73.7,75.7,"UKHSA/Andrews et al., 2022",,,,,,,,
+omicron,Moderna,AstraZeneca,3,symptomatic_disease,,70.3,69.5,71,"UKHSA/Andrews et al., 2022",,,,,,,,
+omicron,Pfizer,,1,any_infection,,,,,none currently avaliable,,,,,,,,
+omicron,Pfizer,,2,any_infection,documented infection,37,35.6,38.3,"Hansen et al., 2021",,,,,,,,retrospective cohort with 3 million 12+
+omicron,Pfizer,,1,death,,,,,none currently avaliable,,,,,,,,
+omicron,Pfizer,,2,death,,,,,none currently avaliable,,,,,,,,
+omicron,Pfizer,,1,severe_disease,,64.3,55.6,71.3,"Florentino et al., 2022",,,,,,,,"this study's estimates for dose two align well with UKHSA; 447,882 adolescents 12-17"
+omicron,Pfizer,,2,severe_disease,hospitalisation,73.6,40.7,88.3,"UKHSA/Andrews et al., 2022",,,,,,,,"aligns with all other studies in the forest plot, England, test-negative case control"
+omicron,Pfizer,,1,symptomatic_disease,,28.1,26.3,29.9,"Florentino et al., 2022",,,,,,,,"this study's estimates for dose two align well with UKHSA; 447,882 adolescents 12-17"
+omicron,Pfizer,,2,symptomatic_disease,,65.8,64.4,67.2,"UKHSA/Andrews et al., 2022",,,,,,,,aligns with other included studies
+omicron,Pfizer,Pfizer,3,symptomatic_disease,,68.7,67.9,69.5,"UKHSA/Andrews et al., 2022",,,,,,,,Pfizer primary + Pfizer booster
+omicron,Pfizer,AstraZeneca,3,symptomatic_disease,,62.7,62,63.4,"UKHSA/Andrews et al., 2022",14/01/2022,England,general population,test negative case control,2,4,14 weeks,
+omicron,Sinopharm,,1,any_infection,,,,,none currently avaliable,,,,,,,,
+omicron,Sinopharm,,2,any_infection,,,,,none currently avaliable,,,,,,,,
+omicron,Sinopharm,,1,death,,,,,none currently avaliable,,,,,,,,
+omicron,Sinopharm,,2,death,,,,,none currently avaliable,,,,,,,,
+omicron,Sinopharm,,1,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+omicron,Sinopharm,,2,symptomatic_disease,,,,,none currently avaliable,,,,,,,,
+omicron,Sinopharm,,1,severe_disease,,,,,none currently avaliable,,,,,,,,
+omicron,Sinopharm,,2,severe_disease,,,,,none currently avaliable,,,,,,,,
+omicron,Sinovac,,1,any_infection,,,,,none currently avaliable,,,,,,,,
+omicron,Sinovac,,2,any_infection,,,,,none currently avaliable,,,,,,,,
+omicron,Sinovac,,1,death,,,,,none currently avaliable,,,,,,,,
+omicron,Sinovac,,2,death,,,,,none currently avaliable,,,,,,,,
+omicron,Sinovac,,1,severe_disease,hospitalisation or death,46.1,39.1,52.4,"Ranzani et al., 2022",,,,,,,,test-negative case control with 1.3 million adults
+omicron,Sinovac,,2,severe_disease,hospitalisation or death,49.9,30.7,63.7,"Ranzani et al., 2022",,,,,,,,test-negative case control with 1.3 million adults
+omicron,Sinovac,,1,symptomatic_disease,,16.5,15.3,17.6,"Ranzani et al., 2022",,,,,,,,test-negative case control with 1.3 million adults
+omicron,Sinovac,,2,symptomatic_disease,,26.9,25.1,28.6,"Ranzani et al., 2022",,,,,,,,test-negative case control with 1.3 million adults
+omicron,Pfizer,AstraZeneca,3,severe_disease,hospitalisation,83,78,85,Stowe,24/03/2022,UK,18-64 years,test negative case control,1,2,22 weeks,
+omicron,Pfizer,AstraZeneca,3,death,ICU admission,98,90,99,Stowe,24/03/2022,UK,18-64 years,test negative case control,1,2,22 weeks,
+omicron,Pfizer,Pfizer,3,death,ICU admission,99,90,100,Stowe,24/03/2022,UK,18-64 years,test negative case control,1,2,22 weeks,
+omicron,Pfizer,Sinovac,3,symptomatic_disease,,56.8,56.3,57.3,"Ranzani et al., 2022",16/08/2022,Brazil,general population,test negative case control,1,9,22 weeks,
+omicron,Pfizer,Sinovac,3,severe_disease,hospitalisation or death,86,84.5,87.4,"Ranzani et al., 2022",16/08/2022,Brazil,general population,test negative case control,1,9,22 weeks,
+omicron,Pfizer,AstraZeneca,3,symptomatic_disease,,42.8,42.1,43.5,Cerqueira-Silva,14/04/2022,Brazil,general population,test negative case control,2,4,6 weeks,
+omicron,Pfizer,AstraZeneca,3,severe_disease,,80.9,88.9,90.7,Cerqueira-Silva,14/04/2022,Brazil,general population,test negative case control,2,4,6 weeks,
+omicron,Pfizer,AstraZeneca,3,symptomatic_disease,,49,45.3,52.4,Cerqueira-Silva,14/04/2022,Scotland,general population,test negative case control,2,4,6 weeks,
+omicron,Pfizer,AstraZeneca,3,severe_disease,,81.8,55,92.6,Cerqueira-Silva,14/04/2022,Scotland,general population,test negative case control,2,4,6 weeks,
+omicron,Pfizer,Sinovac,3,symptomatic_disease,,63.6,62.8,64.3,Cerqueira-Silva,18/07/2022,Brazil,general population,,2,4,22 weeks,
+omicron,Pfizer,Sinovac,3,severe_disease,hospitalisation or death,89.4,87.8,90.7,Cerqueira-Silva,18/07/2022,Brazil,general population,,2,4,22 weeks,
+omicron,Pfizer,Sinovac,3,death,,90.2,87.6,92.3,Cerqueira-Silva,18/07/2022,Brazil,general population,,2,4,22 weeks,
+omicron,Pfizer,Pfizer,3,severe_disease,hospitalisation,86,84,89,Smid,25/02/2022,Czech Republic,general population,retrospective cohort,2,10,24 weeks,
+omicron,Pfizer,Pfizer,3,severe_disease,hospitalisation,88.8,87.3,90.1,Hansen,30/03/2022,Denmark,general population,retrospective cohort,1,4,4 weeks,
+omicron,Pfizer,Pfizer,3,severe_disease,,88.3,85.1,90.7,Cerqueira-Silva,18/07/2022,Brazil,general population,,2,4,4 weeks,
+omicron,Pfizer,Pfizer,3,any_infection,,47.9,47.4,48.2,Hansen,30/03/2022,Denmark,general population,retrospective cohort,1,4,4 weeks,

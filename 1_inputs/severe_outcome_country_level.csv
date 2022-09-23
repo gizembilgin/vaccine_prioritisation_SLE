@@ -1,0 +1,11 @@
+country,outcome_long,outcome,percentage,source
+SLE,infection fatality ratio,death,0.034,Ayoub et al. 2021
+SLE,infection severity rate,severe_disease,0.27,Ayoub et al. 2021
+SLE,infection criticallity rate,critical_disease,0.08,Ayoub et al. 2021
+SLE,infection acute-care bed,hosp,1.25,Ayoub et al. 2021
+SLE,infection ICU bed,ICU,0.18,Ayoub et al. 2021
+PNG,infection fatality ratio,death,0.04,Ayoub et al. 2021
+PNG,infection severity rate,severe_disease,0.33,Ayoub et al. 2021
+PNG,infection criticallity rate,critical_disease,0.1,Ayoub et al. 2021
+PNG,infection acute-care bed,hosp,1.38,Ayoub et al. 2021
+PNG,infection ICU bed,ICU,0.21,Ayoub et al. 2021

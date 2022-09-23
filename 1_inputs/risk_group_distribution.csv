@@ -1,0 +1,9 @@
+risk_group_name,age_group,prop,source
+adults_with_comorbidities,0 to 4,0,SL gov COVAX estimates
+adults_with_comorbidities,5 to 9,0,SL gov COVAX estimates
+adults_with_comorbidities,10 to 17,0,SL gov COVAX estimates
+adults_with_comorbidities,18 to 29,0,SL gov COVAX estimates
+adults_with_comorbidities,30 to 44,0.098,SL gov COVAX estimates
+adults_with_comorbidities,45 to 59,0.098,SL gov COVAX estimates
+adults_with_comorbidities,60 to 69,1,SL gov COVAX estimates
+adults_with_comorbidities,70 to 100,1,SL gov COVAX estimates
