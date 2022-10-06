@@ -4,13 +4,13 @@
 
 ###### (1/5) Vaccination
 #(A/B) Coverage 
-#(i/iv) Vaccine coverage at end of known history
+#(i/iii) Vaccine coverage at end of known history
 vaccine_coverage_end_history = vaccination_history_TRUE %>% 
   filter(date == max(vaccination_history_TRUE$date)) %>%
   select(dose,vaccine_type,age_group,risk_group,coverage_this_date)
 #_________________________________________________
 
-#(ii/iv) Add hypothetical campaign (if 'on') ____
+#(ii/iii) Add hypothetical campaign (if 'on') ____
 if (vax_strategy_toggle == "on" & vax_risk_strategy_toggle == "off"){
   vaccination_history_FINAL = 
     vax_strategy(vax_strategy_start_date        = vax_strategy_toggles$vax_strategy_start_date,
@@ -74,9 +74,37 @@ if (vax_strategy_toggle == "on" & vax_risk_strategy_toggle == "off"){
              doses_delivered_this_date > 0)
   date_complete_at_risk_group = max(date_complete_at_risk_group$date)
   
+  if (is.na(risk_group_lower_cov_ratio) & 
+      max(vaccination_history_FINAL$date[vaccination_history_FINAL$dose == 1 & vaccination_history_FINAL$risk_group == risk_group_name & vaccination_history_FINAL$doses_delivered_this_date>0]) >
+      max(vaccination_history_FINAL$date[vaccination_history_FINAL$dose == 1 & vaccination_history_FINAL$risk_group != risk_group_name & vaccination_history_FINAL$doses_delivered_this_date>0])){
+    stop('high risk group finish dose 1 after lower risk group')
+  }
+  
+  #sum across day in case date fitted < date_now
+  if ('FROM_vaccine_type' %in% names(vaccination_history_FINAL)){
+    vaccination_history_FINAL = vaccination_history_FINAL %>%
+      group_by(date,vaccine_type,vaccine_mode,dose,age_group,risk_group,FROM_dose,FROM_vaccine_type) %>%
+      summarise(doses_delivered_this_date = sum(doses_delivered_this_date), .groups = 'keep')
+  } else{
+    vaccination_history_FINAL = vaccination_history_FINAL %>%
+      group_by(date,vaccine_type,vaccine_mode,dose,age_group,risk_group) %>%
+      summarise(doses_delivered_this_date = sum(doses_delivered_this_date), .groups = 'keep')
+  }
+
+  
 } else {
   vaccination_history_FINAL = vaccination_history_TRUE
 }
+
+#UPDATE: Delay & Interval 
+vaxCovDelay = crossing(dose = seq(1,num_vax_doses),delay = 0)
+vaxCovDelay = vaxCovDelay %>%
+  mutate(delay = case_when(
+    dose == 1 ~ 21,
+    TRUE ~ 14 #all other doses
+  ))
+#_________________________________________________
+
 
 #extract other attributes
 if (nrow(vaccination_history_FINAL[vaccination_history_FINAL$dose == 8,])>0){
@@ -106,17 +134,8 @@ date_now = date_start
 #_________________________________________________
 
 
-#(iii/iv) Delay & Interval ____________________________________
-vaxCovDelay = crossing(dose = seq(1,num_vax_doses),delay = 0) #delay from vaccination to protection
-vaxCovDelay = vaxCovDelay %>%
-  mutate(delay = case_when(
-    dose == 1 ~ 21,#number of days till protection from first dose, COMEBACK - J&J full protection after 14 days?
-    TRUE ~ 14 #all other doses
-  ))
-#_________________________________________________
 
-
-#(iv/iv)  Initial coverage _______________________
+#(iii/iii)  Initial coverage _______________________
 #Including coverage_this_date for projected doses
 vaccination_history_FINAL = vaccination_history_FINAL %>% 
   left_join(pop_risk_group_dn, by = c("age_group", "risk_group")) %>%
@@ -178,7 +197,9 @@ for (r in 1:num_risk_groups){ # risk group
   }
 }
 vaccine_coverage$cov[is.na(vaccine_coverage$cov)] = 0
-
+#CHECK
+check =  vaccine_coverage %>% group_by(dose,age_group,risk_group) %>% summarise(check = sum(cov),.groups = "keep") %>% filter(check>1)
+if(nrow(check)>1){stop('inital vaccine coverage > 100%')}
 
 
 #(B/B) Vaccine Effectiveness (VE)
