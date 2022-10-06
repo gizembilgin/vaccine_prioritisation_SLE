@@ -92,7 +92,6 @@ if (new_variant_check == "on"){
 if (new_variant_check == "off"){
   risk_group_prioritisation_to_date = NA
   risk_group_lower_cov_ratio = NA
-  default_prioritisation_proportion = 0.5
   
   risk_group_toggle = "on"
   risk_group_name_list = c('pregnant_women', 'adults_with_comorbidities')
