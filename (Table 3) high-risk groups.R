@@ -4,7 +4,7 @@
 
 ### (1) Overarching trackers #####################################################################################################
 warehouse_table = data.frame() 
-warehouse_plot = data.frame()
+warehouse_plot  = data.frame()
 
 #resets
 vax_strategy_toggles = vax_strategy_toggles_CURRENT_TARGET
