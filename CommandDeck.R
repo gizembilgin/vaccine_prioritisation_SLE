@@ -32,7 +32,7 @@ if ( debug == "on"){
   strain_inital = strain_now = 'omicron'             
   load(file = '1_inputs/last_fit_date.Rdata')
   date_start = fitted_max_date
-  model_weeks = 1          
+  model_weeks = 4          
   
   
   ##options for run from start
@@ -44,10 +44,10 @@ if ( debug == "on"){
   
   setting = "SLE"
   RR_estimate  = 2
-  vax_strategy_toggle = "on"
-  vax_risk_strategy_toggle = "on"
+  vax_strategy_toggle = "off"
+  vax_risk_strategy_toggle = "off"
   risk_group_toggle = "on" 
-  risk_group_name = "pregnant_women" #options: pregnant_women, adults_with_comorbidities
+  risk_group_name = "adults_with_comorbidities" #options: pregnant_women, adults_with_comorbidities
   risk_group_prioritisation_to_date = NA
   default_prioritisation_proportion = 0.5
   
@@ -103,7 +103,7 @@ if (fitting == "on"){
     fitted_incidence_log = fitted_incidence_log %>% filter(date <= date_start)
     
     if (risk_group_toggle == "on"){
-      if ((is.na(risk_group_prioritisation_to_date) == FALSE) | (! default_prioritisation_proportion == 0.5) ){
+      if ((is.na(risk_group_prioritisation_to_date) == FALSE) ){
         stop('no fitted result avaliable for this risk group characteristic')
       }
     }
