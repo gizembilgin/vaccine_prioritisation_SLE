@@ -8,7 +8,7 @@
 vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical vaccination program
                          vax_strategy_num_doses,        # num of doses avaliable
                          vax_strategy_roll_out_speed,   # doses delivered per day
-                         vax_delivery_group = 'universal', #options = 'universal','at_risk','general_public'
+                         vax_delivery_group = 'universal', #options = 'universal','at_risk','general_public'. NOTE: 'universal' assumes no risk groups and sets to 'general_public'
                          vax_age_strategy,              # options: "oldest", "youngest","50_down","uniform"
                          vax_dose_strategy,             # number of doses delivered per person
                          vax_strategy_vaccine_type,     # options: "Moderna","Pfizer","AstraZeneca","Johnson & Johnson","Sinopharm","Sinovac"  
@@ -64,23 +64,39 @@ vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical 
     #what proportion of the 'at risk' population are untouched by the existing vaccination program?
     workshop_cov = vaccination_history_TRUE %>% # current vaccine coverage in at risk
       filter(date == max(vaccination_history_TRUE$date) &
-               risk_group == risk_group_name)
+               risk_group == this_risk_group)
     
     # pop touched by existing vaccination program
     workshop_touched = workshop_cov %>% 
-      filter(dose == 1) 
-    workshop_touched = aggregate(workshop_touched$coverage_this_date, by = list(category = workshop_touched$age_group), FUN = sum)
-    colnames(workshop_touched) = c('age_group','cov')
+      filter(dose == 1) %>%
+      group_by(age_group) %>%
+      summarise(cov = sum(coverage_this_date))
+
+    
+    #relevant age groups
+    eligible_age_groups = prioritisation_csv %>%
+      filter(strategy == vax_age_strategy & priority != 99)
+    risk_group_age_groups = pop_risk_group_dn %>%
+      filter(risk_group == this_risk_group & pop>0)
     
     #consideration of 'unreachable' % either for vaccine hesitancy or access
     unreachable = 1-vax_strategy_max_expected_cov 
     workshop_pop_dn = workshop_touched %>% 
+      filter(age_group %in% eligible_age_groups$age_group & age_group %in% risk_group_age_groups$age_group) %>%
       left_join(this_pop, by = "age_group") %>%
       mutate(pop_touched = pop*cov,
              pop_untouched = pop - pop*unreachable - pop*cov)
     
     # calculate proportion to booster / (booster + primary)
-    vax_proportion_booster = (sum(workshop_pop_dn$pop_touched))/(sum(workshop_pop_dn$pop_untouched)+ sum(workshop_pop_dn$pop_touched))   #NOTE: this is standard assumption of basis of population size
+    vax_proportion_booster = (sum(workshop_pop_dn$pop_touched))/(sum(workshop_pop_dn$pop_untouched)*vax_dose_strategy+ sum(workshop_pop_dn$pop_touched))  
+    #NOTE: we are prioritising doses NOT individuals to ensure that the risk group finish their primary schedule before or at the same time as the general public
+    #The code has also been crafted to inflate pop_untouched for a double-dose vaccine
+    
+    #CHECK
+    check = workshop_pop_dn %>% filter(round(pop*vax_strategy_max_expected_cov) != round(pop_touched + pop_untouched))
+    if (nrow(check)>0){
+      stop('full population not considered')
+    }
   }
   #_______________________________________________________________________________
   
@@ -384,6 +400,7 @@ vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical 
   }
   
   ggplot(vax_delivery_outline) + geom_point(aes(x=date,y=doses_delivered_this_date,color=as.factor(age_group),shape=as.factor(dose)))
+  #Don't forget the booster doses to completely unvaccinated individuals appear here
   ######################################################################################################################################################
   
   
@@ -413,7 +430,7 @@ vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical 
           vaccine_type == "Johnson & Johnson" & dose == 2 ~ 'Y',
           dose == 3 ~ 'Y',
           TRUE ~ 'N'))  %>%
-      filter(risk_group %in% risk_group_name &
+      filter(risk_group %in% this_risk_group &
                # primary_schedule_complete == "Y" & #CAN CHANGE THIS TOGGLE #ASSUMPTION / COMEBACK - including those with only 1 primary dose
                boosted == "N" &
                coverage_this_date > 0) %>%
@@ -468,10 +485,27 @@ vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical 
     
     eligible_pop <- eligible_pop %>% 
       left_join(existing_coverage, by = "age_group") %>%
-      mutate(eligible_individuals = eligible_individuals *cov_to_date) %>%
+      mutate(eligible_individuals = eligible_individuals * cov_to_date) %>%
       select(age_group,dose,vaccine_type,eligible_individuals)
     
-    eligible_pop$eligible_individuals[eligible_pop$dose == 1] = eligible_pop$eligible_individuals[eligible_pop$dose == 1] - eligible_pop$eligible_individuals[eligible_pop$dose == 2]
+    #remove double counted tidy
+    for (d in 2:num_vax_doses){
+      remove = eligible_pop %>% 
+        filter(dose == d) %>%
+        rename(complete_vax = eligible_individuals) %>%
+        select(-dose)
+      
+      if (nrow(remove)>0){
+        eligible_pop = eligible_pop %>% 
+          left_join(remove, by = c('age_group','vaccine_type')) %>%
+          mutate(eligible_individuals = case_when(
+            dose == (d-1) & complete_vax > eligible_individuals ~ 0, #this shouldn't be triggered
+            dose == (d-1) ~ eligible_individuals - complete_vax,
+            TRUE ~ eligible_individuals,
+          )) %>%
+          select(-complete_vax)
+      }
+    }
     #_______________________________________________________________________________
     
     
@@ -544,7 +578,8 @@ vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical 
     daily_per_dose = booster_rollout_speed
     
     #modify if available doses restricted
-    if (nrow(vax_roll_out_speed_modifier)>0){
+    booster_speed_modifier$day = booster_speed_modifier$date - vax_strategy_start_date + 1
+    if (nrow(booster_speed_modifier)>0){
       exception_list = unique(booster_speed_modifier$day)
       workshop = booster_speed_modifier %>% filter(cumsum<ceiling)
       workshop = nrow(workshop) + 1
@@ -579,15 +614,13 @@ vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical 
       
       #ensuring that we don't overshoot available doses
       if (day == timeframe){
-        workshop_leftover = sum(booster_delivery_outline$doses_delivered)
-        avaliable = min(booster_dose_allocation-workshop_leftover,daily_per_dose)
+        total_delivered = sum(booster_delivery_outline$doses_delivered)
+        avaliable = min(booster_dose_allocation-total_delivered,daily_per_dose,ceiling-total_delivered)
+
         #CHECK
-        if(! round(workshop_leftover) %in% c(round((timeframe-1)*daily_per_dose))){
-          if (round(workshop_leftover) %in% round(sum(booster_speed_modifier$doses_avaliable[booster_speed_modifier$day < timeframe]))){
-          } else{
-            stop('delivered booster doses do not align with expected')
-          }
-          }
+        total_delivered = total_delivered + avaliable
+        if(! total_delivered == ceiling){stop('delivered booster doses do not align with expected')}
+
       }
       if (avaliable > sum(VA$doses_left)){avaliable = sum(VA$doses_left)}
       
@@ -599,7 +632,7 @@ vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical 
           if(0 %in% VA$doses_left[VA$priority == priority_num & VA$dose == 1]){
             age_complete = VA$age_group[VA$doses_left == 0 & VA$priority == priority_num & VA$dose == 1]
             VA$priority[VA$age_group %in% age_complete] = VA$priority[VA$age_group %in% age_complete] + 100
-            
+
             priority_group = as.character(unique(VA$age_group[VA$priority == priority_num]))
           } #FIX - when one age group in the priority group runs out first
           
@@ -692,7 +725,7 @@ vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical 
         vaccine_type == "Johnson & Johnson" & dose == 2 ~ 'Y',
         dose == 3 ~ 'Y',
         TRUE ~ 'N'))  %>%
-      filter(risk_group %in% risk_group_name &
+      filter(risk_group %in% this_risk_group &
                # primary_schedule_complete == "Y" & #CAN CHANGE THIS TOGGLE
                boosted == "N" &
                coverage_this_date > 0) %>%
