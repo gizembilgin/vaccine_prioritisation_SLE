@@ -1,5 +1,7 @@
 ### This program runs the model over each time_step, updating vaccination rates daily
 
+options(warn = 0) #options = 0 to turn off, 2 to stop at first warning
+
 sol_log = data.frame()
 sol_log_unedited = data.frame()
 incidence_log = data.frame()
@@ -131,7 +133,7 @@ for (increments_number in 1:num_time_steps){
                }
              }
            }
-           
+
             for (i in 1:num_age_groups){ # across age groups
               
               increase = rep(0,num_vax_doses)
@@ -153,7 +155,7 @@ for (increments_number in 1:num_time_steps){
                  }
                  if (is.nan(prop[d+1]) == TRUE){prop[d+1]=0}
                }
-      
+
                next_state$pop[next_state$class == class & next_state$risk_group == this_risk_group & next_state$vaccine_type == "unvaccinated" & next_state$age_group == age_group_labels[i]] =
                  next_state$pop[next_state$class == class & next_state$risk_group == this_risk_group & next_state$vaccine_type == "unvaccinated" & next_state$age_group == age_group_labels[i]] - increase[1]* prop[1]
                
@@ -170,28 +172,8 @@ for (increments_number in 1:num_time_steps){
          }
       }
       
-      #pulling dose 2 from unvaccinated when more dose 2 administered than individuals available in dose 1
-      #these negatives have resulted because we do not know vaccine delivery by type and date
-      #we have assumed uniform vaccination by vaccine type (in (1)_simulate_setting) where really J&J doses were donated
-      #at a later date then most other doses
-      if(nrow(next_state[round(next_state$pop)<0,])>0 & date_now<max(vaccination_history_TRUE$date)){
-        to_correct = next_state[round(next_state$pop)<0,] %>%
-          mutate(dose = dose - 1) %>%
-          group_by(class,age_group,dose,risk_group) %>%
-          summarise(correction = sum(pop), .groups = "keep")
         
-        next_state = next_state %>% 
-          left_join(to_correct,by=c('class','age_group','dose','risk_group')) %>%
-          mutate(pop = case_when(
-            is.na(correction) == FALSE ~ pop + correction,
-            TRUE ~ pop)) %>%
-          select(-correction)
         
-        next_state$pop[round(next_state$pop)<0] = 0
-      }
-        
-          
-       
       #### BOOSTER TO PREVIOUS PRIMARY
       #NB: using '8' as a flag for a booster to a previously primary delivered individaul
       if (nrow(vaccination_history_FINAL[vaccination_history_FINAL$dose == 8,])>0){
@@ -284,7 +266,7 @@ for (increments_number in 1:num_time_steps){
     
         if (round(sum(next_state$pop))!= round(sum(prev_state$pop))){stop('pop not retained between next_state and prev_state!')}
         if (round(sum(next_state$pop))!= sum(pop)) {stop('pop in next_state not equal to setting population')}
-        if(nrow(next_state[round(next_state$pop)<0,])>0){ stop('(4)_time_step line 224')}
+        if(nrow(next_state[round(next_state$pop)<0,])>0){ stop('(4)_time_step line ~290')}
         
         
         # convert back into long vector form for ODE solver
