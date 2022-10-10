@@ -137,9 +137,7 @@ if ( debug == "on" | fitting == "on"){
 
 #       (2/4) User choice / Model toggles              
 ####################################################################
-if (Sys.info()[['user']] == 'u6044061'){ rootpath = 'C:/Users/u6044061/Documents/PhD/Research/2_scarce_COVID_vaccine_supply/4_code/'
-}else if (Sys.info()[['user']] == 'gizem'){ rootpath = 'C:/Users/gizem/Documents/PhD/Research/2_scarce_COVID_vaccine_supply/4_code/'}
-
+rootpath = str_replace(getwd(), "GitHub_vaxAllocation","") #Note: x_results not stored within GitHub repository
 complete_model_runs = 1   # when >1 samples randomly from distribution of parameters (where available)
 discounting_rate = 0      #discounting on YLL
 #__________________________________________________________________

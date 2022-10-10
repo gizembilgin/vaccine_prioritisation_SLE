@@ -11,10 +11,7 @@
 
 
 if (setting == "SLE"){setting_long = "Sierra Leone"}
-if (exists("rootpath") == FALSE){
-  if (Sys.info()[['user']] == 'u6044061'){ rootpath = 'C:/Users/u6044061/Documents/PhD/Research/2_scarce_COVID_vaccine_supply/4_code/'
-  }else if (Sys.info()[['user']] == 'gizem'){ rootpath = 'C:/Users/gizem/Documents/PhD/Research/2_scarce_COVID_vaccine_supply/4_code/'}
-}
+if (exists("rootpath") == FALSE){rootpath = str_replace(getwd(), "GitHub_vaxAllocation","")}
 if (exists("num_risk_groups") == FALSE){num_risk_groups = 1}
 #______________________________________________________________________________________________________________________________________
 
