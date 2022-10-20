@@ -21,11 +21,11 @@ for (setting in c('SLE')){
   #(C) Check zero values, and manually overwrite them
   workshop[workshop$rate == 0,] #n=3
   workshop$rate[workshop$agegroup == '0 to 9' & workshop$outcome=='critical_disease'] = 
-    workshop$rate[workshop$agegroup == '10 to 19' & workshop$outcom=='critical_disease'] * 1.5
-  workshop$rate[workshop$agegroup == '10 to 19' & workshop$outcom=='death'] = 
-    workshop$rate[workshop$agegroup == '20 to 29' & workshop$outcom=='death']
-  workshop$rate[workshop$agegroup == '0 to 9' & workshop$outcom=='death'] = 
-    workshop$rate[workshop$agegroup == '10 to 19' & workshop$outcom=='death'] * 1.5
+    workshop$rate[workshop$agegroup == '10 to 19' & workshop$outcome=='critical_disease'] * 1.5
+  workshop$rate[workshop$agegroup == '10 to 19' & workshop$outcome=='death'] = 
+    workshop$rate[workshop$agegroup == '20 to 29' & workshop$outcome=='death']
+  workshop$rate[workshop$agegroup == '0 to 9' & workshop$outcome=='death'] = 
+    workshop$rate[workshop$agegroup == '10 to 19' & workshop$outcome=='death'] * 1.5
   workshop[workshop$rate == 0,] #n=0
   
   #(D) calculate RR, clean age groups
