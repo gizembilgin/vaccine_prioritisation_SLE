@@ -3,6 +3,7 @@
 
 # VE_loop set to 0 when no sensitivity analysis of reduced VE in older adults or adults with comorbidities is conducted
 if (exists("VE_loop") == FALSE){ VE_loop = 0} 
+if (VE_loop == 0 & 'VE_older_adults' %in% names(sensitivity_analysis_toggles)){VE_loop = 1}
 if (VE_loop == 0){
   if (length(unique(VE_waning_distribution$outcome)) == 1){ #'any_infection'
     save_VE_waning_distribution = VE_waning_distribution
@@ -22,7 +23,7 @@ if (VE_loop == 0){
   VE_waning_distribution = VE_waning_distribution %>% filter(! dose == 3) %>% select(-primary_if_booster)
   VE_waning_distribution = rbind(VE_waning_distribution,workshop)
   
-} else if (VE_loop == 1 &'VE_older_adults' %in% names(sensitivity_analysis_toggles)){
+} else if (VE_loop == 1 & 'VE_older_adults' %in% names(sensitivity_analysis_toggles)){
   #Note: VE_loop == 2 (comorb) will use this same dn
   load( file = '1_inputs/SA_VE_older_muted_SO.Rdata')
   VE_waning_distribution_SO = SA_VE_older_muted_SO %>% filter(waning == waning_toggle_severe_outcome )
@@ -37,7 +38,7 @@ if (VE_loop == 0){
   VE_waning_distribution = VE_waning_distribution %>% filter(! dose == 3) %>% select(-primary_if_booster)
   VE_waning_distribution = rbind(VE_waning_distribution,workshop)
 }  
-
+rm(VE_waning_distribution_SO)
 
 
 #(A/C) calculate VE against severe outcomes by day
@@ -119,6 +120,8 @@ if (risk_group_toggle == "on"){
   
   severe_outcome_FINAL_wRisk$percentage[is.na(severe_outcome_FINAL_wRisk$percentage)]=0
   severe_outcome_FINAL = severe_outcome_FINAL_wRisk
+  
+  rm(IR_gen, IR_risk, row_gen, row_risk, severe_outcomes_list, severe_outcome_FINAL_wRisk, row, this_age, P, P_general, P_risk)
 }
 
 
@@ -137,9 +140,12 @@ if (risk_group_toggle == "on"){
                               outcome_long = 'adverse pregnancy outcome resulting in neonatal death',
                               age_group  = age_group_labels,
                               percentage = ((stillbirth_risk-1)*stillbirth_prev + (preterm_risk-1)*preterm_prev),
+                              variant = strain_now,
                               outcome_VE = 'severe_disease',
                               risk_group = 'pregnant_women') 
     severe_outcome_FINAL = rbind(severe_outcome_FINAL,row)
+    
+    rm(row, stillbirth_prev, stillbirth_risk, preterm_prev, preterm_risk)
   }
   
   severe_outcome_this_run = severe_outcome_FINAL %>% 
@@ -153,4 +159,6 @@ if (risk_group_toggle == "on"){
     mutate(percentage = percentage*(1-VE)) %>%
     select(date,outcome,outcome_long,age_group,risk_group,vaccine_type,dose,percentage)
 }
+
+rm(VE_tracker, VE_time_step, severe_outcome_FINAL,workshop)
 #_______________________________________________________________________________
