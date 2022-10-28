@@ -13,7 +13,7 @@ apply_risk_strategy <- function(
   ### WARNINGS 
   if (!vax_risk_strategy %in% c('Y','N')){stop('Is the vax strategy on or off? Y/N')}
   if (vax_risk_proportion<0 | vax_risk_proportion>1){stop('vax_risk_proportion must be between 0-1 (0%-100%)')}
-  if (vax_risk_proportion == 0 & vax_risk_strategy == 'Y'){
+  if (vax_risk_proportion == 0 & vax_risk_strategy == 'Y' & !('additional_doses' %in% names(sensitivity_analysis_toggles))){
     warning("Giving 0% priority is not priority! I have overwritten vax_risk_strategy to EQ 'N'")
     vax_risk_strategy = "N"
   }
@@ -129,7 +129,7 @@ apply_risk_strategy <- function(
   
   #<interim calculate doses available per day>
   limiter = data.frame()
-  leftover_doses = vax_strategy_toggles$vax_strategy_num_doses
+  leftover_doses = vax_strategy_toggles$vax_strategy_num_doses - sum(at_risk_delivery_outline$doses_delivered_this_date)
   if (risk_group_accessibility == FALSE){
     limiter = at_risk_delivery_outline %>% group_by(date) %>% 
       summarise(doses_delivered_this_date = sum(doses_delivered_this_date),.groups = "keep") 
@@ -152,7 +152,6 @@ apply_risk_strategy <- function(
           mutate( cumsum = cumsum(doses_avaliable))
       }
     }
-    leftover_doses = vax_strategy_toggles$vax_strategy_num_doses - sum(at_risk_delivery_outline$doses_delivered_this_date)
   } 
   #<fin>
   
@@ -247,14 +246,14 @@ apply_risk_strategy <- function(
         }
       }
     }
-    if (vax_doses_general == 2){
+    if (vax_doses_general >= 2){
       if (unique(na.omit(round(hypoth_doses$cov[hypoth_doses$dose == 3 & hypoth_doses$risk_group == 'general_public'],digits=2))) != vax_strategy_toggles$vax_strategy_max_expected_cov){
-        warning('not all who are willing in the general public have recieved the second dose')
+        warning('not all who are willing in the general public have recieved the booster dose')
       }
     }
-    if (vax_doses_risk == 2){
+    if (vax_doses_risk >= 2){
       if (unique(na.omit(round(hypoth_doses$cov[hypoth_doses$dose == 3 & hypoth_doses$risk_group == risk_group_name],digits=2))) != vax_strategy_toggles$vax_strategy_max_expected_cov){
-        warning('not all who are willing in the risk group have recieved the second dose')
+        warning('not all who are willing in the risk group have recieved the booster dose')
       }
     }
   }
