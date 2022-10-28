@@ -30,13 +30,14 @@ for (increments_number in 1:num_time_steps){
       rho=rho_inital,
       age_group_labels=age_group_labels,
       risk_group_labels = risk_group_labels,
-      VE=VE,
+      VE=VE_inital,
       # VE_onwards=VE_onwards,
       num_age_groups=num_age_groups,
       num_risk_groups = num_risk_groups,
       num_disease_classes = num_disease_classes,
       num_vax_types=num_vax_types,
       num_vax_doses=num_vax_doses)
+    rm(rho_inital,NPI_inital,VE_inital)
     
     sol = as.data.frame(ode(y=state,times=(seq(0,time_step,by=1)),func=covidODE,parms=parameters))
     
@@ -223,6 +224,7 @@ for (increments_number in 1:num_time_steps){
           }
         }
       }
+        rm(this_vax_history, VR_this_step, this_risk_group, this_vax, increase, class, prop)
         
         if (fitting == "on" & date_now == as.Date('2021-11-14')){next_state_FIT = next_state} #savings to compare against known point of seroprevalence
         if (! date_start %in% seed_date & date_now %in% seed_date){
@@ -285,6 +287,7 @@ for (increments_number in 1:num_time_steps){
         
         next_state_FINAL=as.numeric(c(S_next,E_next,I_next,R_next,
                                       Incidence_inital,Exposed_incidence_inital)) #setting Incid to repeated 0s
+        rm(S_next,E_next,I_next,R_next)
     }     
     
     # next time_step!
@@ -321,7 +324,7 @@ for (increments_number in 1:num_time_steps){
            cumulative_incidence = cumsum(daily_cases),
            cumulative_incidence_percentage = 100*cumsum(daily_cases)/sum(pop))
   
-  if (debug == "on" | fitting == "on"){
+  if (fitting == "on"){
     if (fitting == "off" & increments_number == 1){
     } else{
       Reff <- Reff_time_step(parameters,next_state)
@@ -341,6 +344,9 @@ for (increments_number in 1:num_time_steps){
   }
   }
 } ### END INCREMENT (#incidence log moved within loop to allow rho_time_step to access)
+if (fitting == "off"){
+  rm(fitted_incidence_log, sol_log, covidODE, rho_time_step, Reff_time_step, NPI, NGM_R0)
+}
 
 check <- sol_log_unedited
 check$Incid = rowSums(sol_log_unedited[,(A*4+2):(A*5+1)])
@@ -395,6 +401,7 @@ incidence_log_tidy = subset(incidence_log_tidy,select=-c(temp))
 
 if (! fitting == "on"){
   incidence_log_tidy = rbind(fitted_incidence_log_tidy,incidence_log_tidy)
+  rm(fitted_incidence_log_tidy)
 }
 
 
@@ -403,6 +410,8 @@ if (! fitting == "on"){
 skip = (num_disease_classes+1)*(num_age_groups*num_vax_classes)*RISK
 exposed_log = sol_log_unedited %>% 
   select(1, (skip + 2):(skip + 2*J + 1))
+rm(sol_log_unedited)
+
 exposed_log = exposed_log %>%
   filter (time %% time_step == 0, rowSums(exposed_log) != time)
   
@@ -435,10 +444,9 @@ exposed_log = exposed_log_tidy %>% ungroup() %>% pivot_wider(
 #ggplot(exposed_log) + geom_line(aes(x=date,y=reinfection_ratio,color=as.factor(age_group)))
 
 
-if (debug == "on" | fitting == "on"){
+if ( fitting == "on"){
   colnames(rho_tracker_dataframe) = c('rho')
   rho_tracker_dataframe = cbind(rho = rho_tracker_dataframe, date = seq(date_start+1,date_start+nrow(rho_tracker_dataframe),by="days"))
-  if (debug == "on"){Reff_tracker <- cbind(Reff = Reff_tracker, date = seq(date_start+2,date_start+nrow(rho_tracker_dataframe),by="days"))}
   if (fitting == "on"){Reff_tracker <- cbind(Reff = Reff_tracker, date = seq(date_start+1,date_start+nrow(rho_tracker_dataframe)+1,by="days"))}
   colnames(Reff_tracker) = c('Reff','date')
 }
