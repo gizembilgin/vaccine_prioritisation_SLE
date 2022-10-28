@@ -21,6 +21,15 @@ VE_time_step <- function(strain_now,date_now,outcome){
   #(2) doses delivered to this date
   vax_to_this_date <- vaccination_history_FINAL[vaccination_history_FINAL$date <= date_now,] 
   if (nrow(vaccination_history_FINAL[vaccination_history_FINAL$dose == 8,])>0){
+    
+    booster_type = unique(vaccination_history_FINAL$vaccine_type[vaccination_history_FINAL$dose == 8])
+    vaccination_history_FINAL[vaccination_history_FINAL$dose == 8,]
+    if (booster_type == 'Johnson & Johnson'){
+      booster_dose_number = 2
+    } else{
+      booster_dose_number = 3
+    }
+    
     vax_to_this_date = vax_to_this_date %>% mutate(
     dose = case_when(
       dose == 8 ~ booster_dose_number,
@@ -78,11 +87,11 @@ VE_time_step <- function(strain_now,date_now,outcome){
   if(nrow(workshop[round(workshop$VE,digits=2)>1,])){stop('VE > 1!')}
   
   #<interim> add none covered vaccines
-  for (i in 1:J){
-    for (t in 1:num_vax_types){
-      for (d in 1:D){
-        for (r in 1:num_risk_groups){
-          this_vax = vax_type_list[t]
+  for (i in 1:length(unique(vaccination_history_FINAL$age_group))){
+    for (t in 1:length(unique(vaccination_history_FINAL$vaccine_type))){
+      for (d in 1:length(unique(vaccination_history_FINAL$dose))){
+        for (r in 1:length(unique(vaccination_history_FINAL$risk_group))){
+          this_vax = unique(vaccination_history_FINAL$vaccine_type)[t]
           if (!( this_vax %in% unique(workshop$vaccine_type[workshop$risk_group == risk_group_labels[r] & workshop$dose == d & workshop$age_group == age_group_labels[i]]))){
             workshop2 = crossing(risk_group = risk_group_labels[r],
                                  dose = d,
