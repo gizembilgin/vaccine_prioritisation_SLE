@@ -54,6 +54,7 @@ if (age_split_results == "N"){
   workshop_incid =  incidence_log_unedited %>%
     mutate(outcome ='cases',proj = daily_cases) %>%
     select(date,outcome,proj)
+  rm(incidence_log_unedited)
   workshop_2 = rbind(workshop_2,workshop_incid)
   
   #(D/D) Calculate cumulative severe outcomes by outcome type
