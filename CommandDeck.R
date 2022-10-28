@@ -32,7 +32,7 @@ if ( debug == "on"){
   strain_inital = strain_now = 'omicron'             
   load(file = '1_inputs/last_fit_date.Rdata')
   date_start = fitted_max_date
-  model_weeks = 4          
+  model_weeks = 5          
   
   
   ##options for run from start
@@ -50,6 +50,8 @@ if ( debug == "on"){
   risk_group_name = "adults_with_comorbidities" #options: pregnant_women, adults_with_comorbidities
   risk_group_prioritisation_to_date = NA
   default_prioritisation_proportion = 0.5
+  risk_group_lower_cov_ratio = NA
+  sensitivity_analysis_toggles = list()
   
   vax_strategy_toggles =
     list(vax_strategy_start_date        = date_start+30,
@@ -85,6 +87,13 @@ if (fitting == "on"){
     source(paste(getwd(),"/(0)_fitting_model.R",sep=""))
   } else{
     load(file = '1_inputs/fitted_results.Rdata')
+    
+    if('additional_doses' %in% names(sensitivity_analysis_toggles)){
+      if (sensitivity_analysis_toggles$additional_doses == 'start_2022'){
+        load(file = '1_inputs/fitted_results_SA_2022.Rdata')
+      }
+    }
+    
     if (risk_group_toggle == "off"){
       loaded_fit = fitted_results[[1]]
     } else if (risk_group_name == 'pregnant_women'){
@@ -92,12 +101,14 @@ if (fitting == "on"){
     } else if (risk_group_name == 'adults_with_comorbidities'){
       loaded_fit = fitted_results[[3]]
     }
+    rm(fitted_results)
     if (risk_group_toggle == "on"){if(!loaded_fit[[5]] == risk_group_name){stop('risk group name != fitted risk group name')}}
     
     parameters = loaded_fit[[1]]
     fitted_next_state = loaded_fit[[2]]
     fitted_incidence_log_tidy = loaded_fit[[3]]
     fitted_incidence_log = loaded_fit[[4]]
+    rm(loaded_fit)
     
     fitted_incidence_log_tidy = fitted_incidence_log_tidy %>% filter(date <= date_start) 
     fitted_incidence_log = fitted_incidence_log %>% filter(date <= date_start)
@@ -108,8 +119,7 @@ if (fitting == "on"){
       }
     }
   }
-} else{
-  if ('vax_hesistancy_risk_group' %in% names(sensitivity_analysis_toggles)){
+} else if('vax_hesistancy_risk_group' %in% names(sensitivity_analysis_toggles)){
     
     if (! risk_group_name == 'pregnant_women'){stop('havent configured vax hesistance sensitivity analysis for another risk group')}
     
@@ -120,11 +130,12 @@ if (fitting == "on"){
     fitted_next_state = loaded_fit[[2]]
     fitted_incidence_log_tidy = loaded_fit[[3]]
     fitted_incidence_log = loaded_fit[[4]]
+    rm(loaded_fit)
     
     fitted_incidence_log_tidy = fitted_incidence_log_tidy %>% filter(date <= date_start) # CHECKED last of fitted log = first of new log
     fitted_incidence_log = fitted_incidence_log %>% filter(date <= date_start)
-  }
-}
+} 
+
 
 if ( debug == "on" | fitting == "on"){
   Reff_tracker = data.frame()
@@ -139,7 +150,6 @@ if ( debug == "on" | fitting == "on"){
 ####################################################################
 rootpath = str_replace(getwd(), "GitHub_vaxAllocation","") #Note: x_results not stored within GitHub repository
 complete_model_runs = 1   # when >1 samples randomly from distribution of parameters (where available)
-discounting_rate = 0      #discounting on YLL
 #__________________________________________________________________
 
 
@@ -160,8 +170,6 @@ if (exists("prev_risk_num") == FALSE){ prev_risk_num = "NONE"}
 if (exists("prev_risk_group") == FALSE){ prev_risk_group = "NONE"}
 if (exists("risk_group_name") == FALSE){ risk_group_name = "NO RISK GROUPS"}
 if (exists("prev_run_date") == FALSE){ prev_run_date = as.Date('1900-01-01')}
-if (exists("prev_discounting_rate") == FALSE){ prev_discounting_rate = discounting_rate}
-if (prev_discounting_rate != discounting_rate){stop('need to re-run "(mech shop) severe outcome setting-specific rates" to apply new discounting rate')}
 
 if (setting != prev_setting | num_risk_groups != prev_risk_num | risk_group_name != prev_risk_group | prev_run_date != Sys.Date()){
   source(paste(getwd(),"/(1)_simulate_setting.R",sep="")) #load setting stats if new setting
