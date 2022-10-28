@@ -137,7 +137,7 @@ vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical 
     }
   } 
   
-  if (max(existing_coverage$cov_to_date) > vax_strategy_max_expected_cov ){stop('more vaccines already delivered than max expected coverage')}
+  if (round(max(existing_coverage$cov_to_date),digits=4) > round(vax_strategy_max_expected_cov,digits=4) ){stop('more vaccines already delivered than max expected coverage')}
   
   
   #now remove vaccinated, and vaccine hesistant
