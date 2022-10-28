@@ -13,6 +13,7 @@
 if (setting == "SLE"){setting_long = "Sierra Leone"}
 if (exists("rootpath") == FALSE){rootpath = str_replace(getwd(), "GitHub_vaxAllocation","")}
 if (exists("num_risk_groups") == FALSE){num_risk_groups = 1}
+if (exists("fitting") == FALSE){ fitting = "off" }
 #______________________________________________________________________________________________________________________________________
 
 
@@ -438,6 +439,10 @@ supply = setting_vaccine %>% select(vaccine_type,doses) %>%
 
 check = supply %>% left_join(total_doses,by='vaccine_type')
 if (nrow(check[check$supply_doses < check$delivered_doses,])){warning('supply<delivered doses')}
+
+if (fitting == "off"){
+  vaccination_history_POP = vaccination_history_POP %>% filter(date <= date_start)
+}
 ##_____________________________________________________________________________
 
 
