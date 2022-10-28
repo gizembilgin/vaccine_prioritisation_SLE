@@ -12,7 +12,7 @@ rm(list=ls())
 
 #fitting toggles
 new_variant_check = "off"
-
+sensitivity_analysis_2022 = "off"
 
 #general toggles
 setting = "SLE"
@@ -31,6 +31,9 @@ date_start = as.Date('2021-03-31')
 strain_inital = strain_now = 'WT' 
 seed_date = c(as.Date('2021-04-25'),as.Date('2021-09-01')) #first is seed date for delta, second is omicron
 model_weeks = as.numeric((Sys.Date()+1-date_start)/7)
+if (sensitivity_analysis_2022 == 'on'){
+  model_weeks = as.numeric((as.Date('2022-01-01')+1-date_start)/7)
+}
 
 if (new_variant_check == "on"){
   seed_date = c(as.Date('2021-04-25'),as.Date('2021-09-01'),as.Date('2022-09-01')) #check new variant
@@ -119,14 +122,18 @@ if (new_variant_check == "off"){
 
 ### Save fitted results ______________________________________________________________________________________
 if (new_variant_check == "off"){
-  if (! Sys.Date() == date_now-1 ){
+  if (! Sys.Date() == date_now-1 & sensitivity_analysis_2022 == "off"){
     warning('fitted date not equal to current date')
     if (Sys.Date() > date_now){stop('fitted date less than current date, may cause problems with real vaccines not being delivered!')}
   }
   
-  fitted_max_date = date_now-1  #incidence log always missed in first day of model
-  save(fitted_max_date,file = '1_inputs/last_fit_date.Rdata')
-  save(fitted_results, file = '1_inputs/fitted_results.Rdata')
+  if (sensitivity_analysis_2022 == 'on'){
+    save(fitted_results, file = '1_inputs/fitted_results_SA_2022.Rdata')
+  } else{
+    fitted_max_date = date_now-1  #incidence log always missed in first day of model
+    save(fitted_max_date,file = '1_inputs/last_fit_date.Rdata')
+    save(fitted_results, file = '1_inputs/fitted_results.Rdata')
+  }
 }
 #______________________________________________________________________________________________________________
 

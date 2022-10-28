@@ -6,6 +6,13 @@
 warehouse_table = data.frame() 
 warehouse_plot  = data.frame()
 
+#sensitivity analysis
+if (risk_group_name == "pregnant_women"){
+  RR_estimate  = RR_default =  2.4
+} else if (risk_group_name == "adults_with_comorbidities"){
+  RR_estimate  = RR_default = 1.95
+}
+
 #resets
 vax_strategy_toggles = vax_strategy_toggles_CURRENT_TARGET
 outbreak_timing = "off"
@@ -15,11 +22,6 @@ risk_group_toggle = "on"
 risk_group_prioritisation_to_date = NA
 default_prioritisation_proportion = 0.5
 
-if (risk_group_name == "pregnant_women"){
-  RR_estimate  = RR_default =  2.4
-} else if (risk_group_name == "adults_with_comorbidities"){
-  RR_estimate  = RR_default = 1.95
-}
 
 
 
@@ -96,6 +98,9 @@ queue[[8]] = list(vax_strategy_description = 'broaden to <18 pregnant individual
 
 
 ### (3) Run  ##################################################################################################
+if ('additional_doses' %in% names(sensitivity_analysis_toggles)){
+  queue = queue[c(1:4)]
+}
 for (ticket in 1:length(queue)){
   
   commands = queue[[ticket]]
@@ -103,7 +108,18 @@ for (ticket in 1:length(queue)){
   VE_loop = 0
   vax_strategy_description    = commands$vax_strategy_description
   apply_risk_strategy_toggles = commands$apply_risk_strategy_toggles
+  vax_strategy_toggles = vax_strategy_toggles_CURRENT_TARGET
   
+  #make additional booster doses equal priority as previous schedule
+  if (length(booster_prioritised_strategies)>1){
+    booster_prioritised_strategies$risk_proportion = apply_risk_strategy_toggles$vax_risk_proportion
+  }
+  if('additional_doses' %in% names(sensitivity_analysis_toggles)){
+    if (sensitivity_analysis_toggles$additional_doses == 'booster_doses_2023'){
+      apply_risk_strategy_toggles$vax_risk_strategy = "N"
+    }
+  }
+
   source(paste(getwd(),"/CommandDeck.R",sep=""))
   
   severe_outcome_projections = severe_outcome_log %>% 
@@ -172,6 +188,8 @@ for (ticket in 1:length(queue)){
     save(SA_VE_warehouse_table,file =  paste(rootpath,"x_results/sensitivity_analysis_VE_",Sys.Date(),".Rdata",sep=''))
     sensitivity_analysis_toggles = save_toggles
   }
+  
+  rm(severe_outcome_this_run, severe_outcome_log, severe_outcome_log_tidy)
 }
 #____________________________________________________________________________________________________________________________________
 
@@ -307,17 +325,19 @@ for (i in 1:iteration_num){
   time = gsub(':','-',time)
   if ('RR_risk_group' %in% names(sensitivity_analysis_toggles)){
     this_RR = RR_to_test_list[[i]]
-    
     write.csv(print,file=paste(rootpath,'x_results/table3',vax_strategy_toggles_CURRENT_TARGET$vax_strategy_vaccine_type,risk_group_name,'RR',this_RR,time,'.csv',sep=''))
     
   } else if ('VE_older_adults' %in% names(sensitivity_analysis_toggles)){
     this_VE_mod = unique(SA_VE_warehouse_table$VE_mod)[i] 
-    
     write.csv(print,file=paste(rootpath,'x_results/table3',vax_strategy_toggles_CURRENT_TARGET$vax_strategy_vaccine_type,this_VE_mod,time,'.csv',sep=''))
     
   } else if ('vax_hesistancy_risk_group' %in% names(sensitivity_analysis_toggles)){
     write.csv(print,file=paste(rootpath,'x_results/table3',vax_strategy_toggles_CURRENT_TARGET$vax_strategy_vaccine_type,risk_group_name,' vax_hest ',time,'.csv',sep=''))
     results_warehouse_entry[[4]]= print
+    
+  } else if('additional_doses' %in% names(sensitivity_analysis_toggles)){
+    write.csv(print,file=paste(rootpath,'x_results/table3_SA_additional_doses',sensitivity_analysis_toggles$additional_doses,risk_group_name,time,'.csv',sep=''))
+    
   } else{
     write.csv(print,file=paste(rootpath,'x_results/table3',vax_strategy_toggles_CURRENT_TARGET$vax_strategy_vaccine_type,risk_group_name,gov_target,time,'.csv',sep=''))
     results_warehouse_entry[[4]]= print
