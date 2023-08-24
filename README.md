@@ -1,5 +1,5 @@
 # vaccine_prioritisation_SLE
- Code associated with working paper: Modelling COVID-19 vaccination strategies in settings with low supply and limited rollout capacity - a case study in Sierra Leone.
+ Code associated with working paper: Modelling COVID-19 vaccination strategies in settings with low supply and limited rollout capacity - a case study in Sierra Leone. See [preprint](https://dx.doi.org/10.2139/ssrn.4284636).
 
 * FleetAdmiral.R is the highest overarching level of this R Project
 * CommandDeck.R runs all sub-scripts of the COVID-19 transmission model to complete one standard 'run' of the model
