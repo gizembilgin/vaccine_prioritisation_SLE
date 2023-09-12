@@ -148,7 +148,7 @@ if ( debug == "on" | fitting == "on"){
 
 #       (2/4) User choice / Model toggles              
 ####################################################################
-rootpath = str_replace(getwd(), "GitHub_vaxAllocation","") #Note: x_results not stored within GitHub repository
+rootpath = str_replace(getwd(), "vaccine_prioritisation_SLE","") #Note: x_results not stored within GitHub repository
 complete_model_runs = 1   # when >1 samples randomly from distribution of parameters (where available)
 #__________________________________________________________________
 

@@ -70,7 +70,7 @@ for (setting in c('SLE')){
   age_groups_10 = c(0,9,19,29,39,49,59,69,100)
   age_group_labels_10 = c('0 to 9','10 to 19','20 to 29','30 to 39','40 to 49','50 to 59','60 to 69','70 to 100')
   
-  pop_10_bands <- read.csv(paste(rootpath,"inputs/pop_estimates.csv",sep=''), header=TRUE)
+  pop_10_bands <- read.csv("1_inputs/pop_estimates.csv", header=TRUE)
   pop_10_bands <- pop_10_bands %>%
     filter(country == setting) %>%
     mutate(agegroup = cut(age,breaks = age_groups_10, include.lowest = T,labels = age_group_labels_10)) %>%
@@ -117,7 +117,7 @@ for (setting in c('SLE')){
   age_groups_10 = c(0,9,19,29,39,49,59,69,100)
   age_group_labels_10 = c('0 to 9','10 to 19','20 to 29','30 to 39','40 to 49','50 to 59','60 to 69','70 to 100')
   
-  pop_w <- read.csv(paste(rootpath,"inputs/pop_estimates.csv",sep=''), header=TRUE)
+  pop_w <- read.csv("1_inputs/pop_estimates.csv", header=TRUE)
   pop_w <- pop_w[pop_w$country == setting,] %>%
     mutate(agegroup_10 = cut(age,breaks = age_groups_10, include.lowest = T,labels = age_group_labels_10),
            agegroup_model = cut(age,breaks = age_groups_num, include.lowest = T,labels = age_group_labels)) %>%

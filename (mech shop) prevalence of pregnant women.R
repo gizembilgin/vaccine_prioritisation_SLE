@@ -7,7 +7,7 @@
 
 ### read in data
 ASFR = read.csv("1_inputs/DHS_ASFR.csv",header=TRUE)
-women_pop = read.csv(paste(rootpath,"inputs/pop_estimates_female.csv",sep=''),header=TRUE)
+women_pop = read.csv("1_inputs/pop_estimates_female.csv", header=TRUE)
 
 
 ### add 10-14 pregnancy as reported in DHS 2019 with retrospective data

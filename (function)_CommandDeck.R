@@ -15,7 +15,7 @@ library(ggpubr)
 library(tidyverse)
 
 load(file = '1_inputs/last_fit_date.Rdata')
-rootpath = str_replace(getwd(), "GitHub_vaxAllocation","") #Note: x_results not stored within GitHub repository
+rootpath = str_replace(getwd(), "vaccine_prioritisation_SLE","") #Note: x_results not stored within GitHub repository
 
 # Load functions
 source(paste(getwd(),"/(function)_COVID_ODE.R",sep=""))
