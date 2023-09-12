@@ -13,6 +13,7 @@ library(ggplot2)
 library(gridExtra)
 library(ggpubr)
 library(tidyverse)
+library(beepr)
 
 debug = "off"
 debug_type = "partial" #options: "full", "partial"
@@ -82,10 +83,10 @@ if (fitting == "on"){
   warning('Fitting is on')
 } else if ( ! 'vax_hesistancy_risk_group' %in% names(sensitivity_analysis_toggles)){
   load(file = '1_inputs/last_fit_date.Rdata')
-  if (as.numeric(abs(fitted_max_date - Sys.Date()))>30){ 
-    warning('refitting model as fitted_max_date over one month since today!')
-    source(paste(getwd(),"/(0)_fitting_model.R",sep=""))
-  } else{
+  # if (as.numeric(abs(fitted_max_date - Sys.Date()))>30 ){ 
+  #   warning('refitting model as fitted_max_date over one month since today!')
+  #   source(paste(getwd(),"/(0)_fitting_model.R",sep=""))
+  # } else{
     load(file = '1_inputs/fitted_results.Rdata')
     
     if('additional_doses' %in% names(sensitivity_analysis_toggles)){
@@ -118,7 +119,7 @@ if (fitting == "on"){
         stop('no fitted result avaliable for this risk group characteristic')
       }
     }
-  }
+  #}
 } else if('vax_hesistancy_risk_group' %in% names(sensitivity_analysis_toggles)){
     
     if (! risk_group_name == 'pregnant_women'){stop('havent configured vax hesistance sensitivity analysis for another risk group')}
