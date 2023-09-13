@@ -68,10 +68,12 @@ source(paste(getwd(),"/(Table 2)_varying_eligb_age.R",sep=""))
 ###(Table 3) prioritisation of high-risk groups
 receipt = 2
 risk_group_name = "pregnant_women"
+sensitivity_analysis_toggles = list()
 source(paste(getwd(),"/(Table 3) high-risk groups.R",sep=""))
 
 receipt = 3
 risk_group_name = "adults_with_comorbidities"
+sensitivity_analysis_toggles = list()
 source(paste(getwd(),"/(Table 3) high-risk groups.R",sep="")) 
 
 risk_group_toggle = "off"
