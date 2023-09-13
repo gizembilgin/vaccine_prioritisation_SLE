@@ -160,5 +160,5 @@ if (risk_group_toggle == "on"){
     select(date,outcome,outcome_long,age_group,risk_group,vaccine_type,dose,percentage)
 }
 
-rm(VE_tracker, VE_time_step, severe_outcome_FINAL,workshop)
+rm(VE_tracker, severe_outcome_FINAL,workshop)
 #_______________________________________________________________________________
