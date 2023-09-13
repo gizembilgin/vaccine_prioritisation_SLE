@@ -30,7 +30,12 @@ waning_toggle_rho_acqusition = TRUE
 date_start = as.Date('2021-03-31')
 strain_inital = strain_now = 'WT' 
 seed_date = c(as.Date('2021-04-25'),as.Date('2021-09-01')) #first is seed date for delta, second is omicron
-model_weeks = as.numeric((Sys.Date()+1-date_start)/7)
+
+#previously had let the fitted_max_date Sys.Date()
+#now during the first round of peer review (September 2023) let's set it to be the 1st of August to align with the previous results
+fitted_max_date = as.Date('2022-08-01')
+
+model_weeks = as.numeric((fitted_max_date+1-date_start)/7)
 if (sensitivity_analysis_2022 == 'on'){
   model_weeks = as.numeric((as.Date('2022-01-01')+1-date_start)/7)
 }
@@ -122,10 +127,10 @@ if (new_variant_check == "off"){
 
 ### Save fitted results ______________________________________________________________________________________
 if (new_variant_check == "off"){
-  if (! Sys.Date() == date_now-1 & sensitivity_analysis_2022 == "off"){
-    warning('fitted date not equal to current date')
-    if (Sys.Date() > date_now){stop('fitted date less than current date, may cause problems with real vaccines not being delivered!')}
-  }
+  # if (! Sys.Date() == date_now-1 & sensitivity_analysis_2022 == "off"){
+  #   warning('fitted date not equal to current date')
+  #   if (Sys.Date() > date_now){stop('fitted date less than current date, may cause problems with real vaccines not being delivered!')}
+  # }
   
   if (sensitivity_analysis_2022 == 'on'){
     save(fitted_results, file = '1_inputs/fitted_results_SA_2022.Rdata')
@@ -146,13 +151,14 @@ workshop = next_state     #steady state in August 2022
 
 sum(workshop$pop[workshop$class == "R"])/sum(workshop$pop)
 
-workshop %>%
+seroprev_2022 = workshop %>%
   filter(class == 'R') %>%
   group_by(age_group) %>%
   summarise(pop = sum(pop)) %>%
   rename(recovered = pop) %>%
   left_join(pop_setting,by='age_group') %>%
   mutate(seroprev= recovered/pop)
+seroprev_2022
 
 #plot shape of outbreak compared to reported cases
 coeff <- 1/2000
@@ -165,7 +171,11 @@ ggplot() +
     name = "Model projections",
     sec.axis = sec_axis(~.*coeff, name="Reported cases")
   )+ 
-  plot_standard
+  #plot_standard +
+  theme_bw() + 
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.line = element_line(color = 'black'))
 
 if (new_variant_check == "on"){
   if (max(incidence_log_fit$date) == max(incidence_log_outbreak$date)){
@@ -178,10 +188,23 @@ if (new_variant_check == "on"){
         name = "Model projections",
         sec.axis = sec_axis(~.*coeff, name="Reported cases")
       ) + 
-      plot_standard
+      theme_bw() +
+      theme(panel.grid.major = element_blank(),
+            panel.grid.minor = element_blank(),
+            axis.line = element_line(color = 'black'))
       
   }
 }
+
+seroprev_comparison = seroprev_2022 %>%
+  select(age_group,seroprev) %>%
+  mutate(year = 2022,
+         seroprev = seroprev * 100)
+seroprev_comparison = bind_rows(seroprev_comparison,seroprev)
+
+ggplot(seroprev_comparison) + 
+  geom_col(aes(x=age_group,y=seroprev)) +
+  facet_grid(year ~., scales = "free_y")
 #______________________________________________________________________________________________________________
 
 

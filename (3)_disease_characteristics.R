@@ -5,8 +5,9 @@ strain_now = strain_inital
 ### (A/D) Transmission
 load(file = "1_inputs/param_age.Rdata")
 suscept = param_age$value[param_age$param == 'susceptibility']    # (i) age-specific susceptibility to infection
+suscept = rep(1,num_age_groups)
 gamma   = param_age$value[param_age$param == 'prop_sympt']        # (ii) proportion of cases symptomatic
-lota    = 0.5                                                     # (iii) modification factor on infectiousness of asymptomatic cases
+lota    = 1                                                       # (iii) modification factor on infectiousness of asymptomatic cases
 
 
 ### (B/D) Latent period 

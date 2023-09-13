@@ -5,7 +5,7 @@
 
 #### R0 #########################################################################
 # R0 = p(NGM) - spectral radius, i.e., absolute maximum eigenvalue
-# NGM = Next Generation Matrix = contact_matrix_adjusted * diag{beta*suscept*(gamma+lota(1-gamme)*1/delta)}
+# NGM = Next Generation Matrix = contact_matrix_adjusted * diag{beta*suscept*(gamma+lota(1-gamma)*1/delta)}
 
 #(A) setup
 beta_fitted_values = data.frame()
