@@ -79,23 +79,20 @@ if (vax_strategy_toggle == "on" & vax_risk_strategy_toggle == "off"){
       max(vaccination_history_FINAL$date[vaccination_history_FINAL$dose == 1 & vaccination_history_FINAL$risk_group != risk_group_name & vaccination_history_FINAL$doses_delivered_this_date>0])){
     stop('high risk group finish dose 1 after lower risk group')
   }
-  
-  #sum across day in case date fitted < date_now
-  if ('FROM_vaccine_type' %in% names(vaccination_history_FINAL)){
-    vaccination_history_FINAL = vaccination_history_FINAL %>%
-      group_by(date,vaccine_type,vaccine_mode,dose,age_group,risk_group,FROM_dose,FROM_vaccine_type) %>%
-      summarise(doses_delivered_this_date = sum(doses_delivered_this_date), .groups = 'keep')
-  } else{
-    vaccination_history_FINAL = vaccination_history_FINAL %>%
-      group_by(date,vaccine_type,vaccine_mode,dose,age_group,risk_group) %>%
-      summarise(doses_delivered_this_date = sum(doses_delivered_this_date), .groups = 'keep')
-  }
 
-  
 } else {
   vaccination_history_FINAL = vaccination_history_TRUE
 }
-
+#sum across day in case date fitted < date_now
+if ('FROM_vaccine_type' %in% names(vaccination_history_FINAL)){
+  vaccination_history_FINAL = vaccination_history_FINAL %>%
+    group_by(date,vaccine_type,vaccine_mode,dose,age_group,risk_group,FROM_dose,FROM_vaccine_type) %>%
+    summarise(doses_delivered_this_date = sum(doses_delivered_this_date), .groups = 'keep')
+} else{
+  vaccination_history_FINAL = vaccination_history_FINAL %>%
+    group_by(date,vaccine_type,vaccine_mode,dose,age_group,risk_group) %>%
+    summarise(doses_delivered_this_date = sum(doses_delivered_this_date), .groups = 'keep')
+}
 
 ### sensitivity analysis - booster doses in 2023
 if (exists("booster_toggles") == FALSE){booster_toggles = list()}
@@ -544,7 +541,6 @@ if (waning_toggle_rho_acqusition == TRUE ){
 }
 if (rho_inital > 1){stop('rho is > 1')}
 
-#LIMITATION WARNING: no age-specific susceptibility to infection is included (no delta data available)
 source(paste(getwd(),"/(function)_calculate_R0_Reff.R",sep=""))
 beta = rep(beta_fitted_values$beta_optimised[beta_fitted_values$strain == strain_inital],num_age_groups)
 #________________________________________________________________

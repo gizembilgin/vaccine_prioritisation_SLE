@@ -74,7 +74,7 @@ if (age_split_results == "N"){
   
   plot1 <- 
     ggplot() + 
-    geom_line(data=severe_outcome_log_plot[severe_outcome_log_plot$outcome != 'cases',],
+    geom_line(data=severe_outcome_log_plot[severe_outcome_log_plot$outcome != 'cases' & !(severe_outcome_log_plot$date %in% (seed_date+1)),],
               aes(x=date,y=proj,color=as.factor(outcome)),na.rm=TRUE) +
     xlab("") + 
     scale_x_date(date_breaks="1 month", date_labels="%b") +

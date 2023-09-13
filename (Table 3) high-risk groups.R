@@ -111,6 +111,7 @@ for (ticket in 1:length(queue)){
   vax_strategy_toggles = vax_strategy_toggles_CURRENT_TARGET
   
   #make additional booster doses equal priority as previous schedule
+  if(exists("booster_prioritised_strategies") == FALSE){booster_prioritised_strategies = list()}
   if (length(booster_prioritised_strategies)>1){
     booster_prioritised_strategies$risk_proportion = apply_risk_strategy_toggles$vax_risk_proportion
   }

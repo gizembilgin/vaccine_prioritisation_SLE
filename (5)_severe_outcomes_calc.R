@@ -143,7 +143,7 @@ if (risk_group_toggle == "on"){
                               variant = strain_now,
                               outcome_VE = 'severe_disease',
                               risk_group = 'pregnant_women') 
-    severe_outcome_FINAL = rbind(severe_outcome_FINAL,row)
+    severe_outcome_FINAL = bind_rows(severe_outcome_FINAL,row)
     
     rm(row, stillbirth_prev, stillbirth_risk, preterm_prev, preterm_risk)
   }

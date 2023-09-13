@@ -206,6 +206,9 @@ vaxCovDelay = vaxCovDelay %>%
 ##(i/iii) Load and clean data _________________________________________________
 if (TOGGLE_websource_data == "off"){
   load(file = "1_inputs/vaccination_history_POP.Rdata")
+  if (fitting == "off"){
+    vaccination_history_POP <- vaccination_history_POP %>% filter(date <= date_start)
+  }
 } else{
   #Take John Hopkins reporting of vaccination coverage, a collation of data from WHO, CDC and Our World in Data
   workshop <- readr::read_csv("https://raw.githubusercontent.com/govex/COVID-19/master/data_tables/vaccine_data/global_data/time_series_covid19_vaccine_global.csv")
