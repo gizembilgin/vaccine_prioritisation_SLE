@@ -1,6 +1,6 @@
 ### This program runs the model over each time_step, updating vaccination rates daily
 
-options(warn = 0) #options = 0 to turn off, 2 to stop at first warning
+#options(warn = 0) #options = 0 to turn off, 2 to stop at first warning
 
 sol_log = data.frame()
 sol_log_unedited = data.frame()
