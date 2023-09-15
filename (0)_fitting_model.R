@@ -151,14 +151,23 @@ workshop = next_state     #steady state in August 2022
 
 sum(workshop$pop[workshop$class == "R"])/sum(workshop$pop)
 
-seroprev_2022 = workshop %>%
+seroprev_nov_2021 = next_state_FIT %>%
   filter(class == 'R') %>%
   group_by(age_group) %>%
   summarise(pop = sum(pop)) %>%
   rename(recovered = pop) %>%
   left_join(pop_setting,by='age_group') %>%
   mutate(seroprev= recovered/pop)
-seroprev_2022
+seroprev_nov_2021
+
+seroprev_aug_2022 = next_state %>%
+  filter(class == 'R') %>%
+  group_by(age_group) %>%
+  summarise(pop = sum(pop)) %>%
+  rename(recovered = pop) %>%
+  left_join(pop_setting,by='age_group') %>%
+  mutate(seroprev= recovered/pop)
+seroprev_aug_2022
 
 #plot shape of outbreak compared to reported cases
 coeff <- 1/2000
@@ -196,15 +205,26 @@ if (new_variant_check == "on"){
   }
 }
 
-seroprev_comparison = seroprev_2022 %>%
+seroprev_mar_2021 = seroprev %>% 
   select(age_group,seroprev) %>%
-  mutate(year = 2022,
+  mutate(label = "March 2021")
+seroprev_nov_2021 = seroprev_nov_2021 %>%
+  select(age_group,seroprev) %>%
+  mutate(label = "November 2021",
          seroprev = seroprev * 100)
-seroprev_comparison = bind_rows(seroprev_comparison,seroprev)
+seroprev_aug_2022 = seroprev_aug_2022 %>%
+  select(age_group,seroprev) %>%
+  mutate(label = "August 2022",
+         seroprev = seroprev * 100)
+
+seroprev_comparison = bind_rows(seroprev_mar_2021,seroprev_nov_2021,seroprev_aug_2022)
+seroprev_comparison$label <- factor(seroprev_comparison$label, levels = c("March 2021","November 2021","August 2022"))
+seroprev_comparison$age_group <- factor(seroprev_comparison$age_group, levels = age_group_labels)
 
 ggplot(seroprev_comparison) + 
   geom_col(aes(x=age_group,y=seroprev)) +
-  facet_grid(year ~., scales = "free_y")
+  facet_grid(label ~., scales = "free_y") +
+  theme_bw()
 #______________________________________________________________________________________________________________
 
 
