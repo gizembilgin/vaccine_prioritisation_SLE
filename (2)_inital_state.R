@@ -308,6 +308,9 @@ if (as.numeric(format(date_start, format="%Y")) > 2022){
   load(file = "1_inputs/seroprev.Rdata")
   seroprev = seroprev[seroprev$setting == setting & seroprev$year ==  2022,]
 }
+if('modification_factor_on_preexisting_immunity' %in% names(sensitivity_analysis_toggles)){
+  seroprev$seroprev = seroprev$seroprev * sensitivity_analysis_toggles$modification_factor_on_preexisting_immunity
+}
 #___________________________________________________________________
 
 

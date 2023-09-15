@@ -119,6 +119,24 @@ if (fitting == "on"){
         stop('no fitted result avaliable for this risk group characteristic')
       }
     }
+    if('modification_factor_on_preexisting_immunity' %in% names(sensitivity_analysis_toggles)){
+      fitted_incidence_log$daily_cases = fitted_incidence_log$daily_cases * sensitivity_analysis_toggles$modification_factor_on_preexisting_immunity
+      fitted_incidence_log_tidy$incidence = fitted_incidence_log_tidy$incidence  * sensitivity_analysis_toggles$modification_factor_on_preexisting_immunity
+      
+      workshop <- fitted_next_state %>%
+        pivot_wider(names_from = "class", 
+                    values_from = "pop") %>%
+        mutate(S_new = S - (sensitivity_analysis_toggles$modification_factor_on_preexisting_immunity - 1) * R,
+               R_new = R + (sensitivity_analysis_toggles$modification_factor_on_preexisting_immunity - 1) * R,
+               check = (S+E+I+R) - (S_new + E + I +R_new)) %>%
+        select(-S,-R, - check) %>%
+        rename(S = S_new,
+               R = R_new) %>%
+        pivot_longer(cols = c("S","E","I","R"),
+                     names_to = "class",
+                     values_to = "pop")
+
+    }
   #}
 } else if('vax_hesistancy_risk_group' %in% names(sensitivity_analysis_toggles)){
     
