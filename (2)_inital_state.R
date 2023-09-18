@@ -145,8 +145,28 @@ if (length(booster_toggles)>1){
       summarise(doses_delivered_this_date = sum(doses_delivered_this_date), .groups = 'keep')
   }
 }
-
-
+vaccination_history_FINAL = vaccination_history_FINAL %>%
+  mutate(schedule = case_when(
+    dose > 2 ~ 'booster',
+    dose == 2 & vaccine_type == "Johnson & Johnson" ~ 'booster',
+    TRUE ~ 'primary'
+  ))
+if (! "FROM_vaccine_type" %in% colnames(vaccination_history_FINAL)){
+  vaccination_history_FINAL$FROM_vaccine_type = vaccination_history_FINAL$vaccine_type
+  vaccination_history_FINAL$FROM_dose = vaccination_history_FINAL$dose - 1
+} else{
+  vaccination_history_FINAL <- vaccination_history_FINAL %>%
+    mutate(
+      FROM_vaccine_type = case_when(
+        is.na(FROM_vaccine_type) == FALSE ~ FROM_vaccine_type,
+        TRUE ~ vaccine_type
+      ),
+      FROM_dose = case_when(
+        is.na(FROM_dose) == FALSE ~ FROM_dose,
+        TRUE ~ dose - 1
+      )
+    )
+}
 
 #UPDATE: Delay & Interval 
 vaxCovDelay = crossing(dose = seq(1,num_vax_doses),delay = 0)
