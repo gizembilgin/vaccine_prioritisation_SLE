@@ -13,7 +13,7 @@ if (VE_loop == 0){
 
   load( file = '1_inputs/VE_waning_distribution_SO.Rdata')
   VE_waning_distribution_SO = VE_waning_distribution_SO %>% filter(waning == waning_toggle_severe_outcome )
-  VE_waning_distribution = bind_rows(VE_waning_distribution,VE_waning_distribution_SO)
+  VE_waning_distribution = bind_rows(VE_waning_distribution,VE_waning_distribution_SO); rm(VE_waning_distribution_SO)
   
   workshop = VE_waning_distribution %>% 
     filter(dose == 3 & strain == strain_now) %>%
@@ -27,7 +27,8 @@ if (VE_loop == 0){
   #Note: VE_loop == 2 (comorb) will use this same dn
   load( file = '1_inputs/SA_VE_older_muted_SO.Rdata')
   VE_waning_distribution_SO = SA_VE_older_muted_SO %>% filter(waning == waning_toggle_severe_outcome )
-  VE_waning_distribution = bind_rows(save_VE_waning_distribution,VE_waning_distribution_SO)
+  #VE_waning_distribution = bind_rows(save_VE_waning_distribution,VE_waning_distribution_SO)
+  VE_waning_distribution = VE_waning_distribution_SO; rm(VE_waning_distribution_SO)
   VE_waning_distribution = VE_waning_distribution %>% group_by(age_group)
   
   workshop = VE_waning_distribution %>% 
@@ -38,7 +39,7 @@ if (VE_loop == 0){
   VE_waning_distribution = VE_waning_distribution %>% filter(! dose == 3) %>% select(-primary_if_booster)
   VE_waning_distribution = rbind(VE_waning_distribution,workshop)
 }  
-rm(VE_waning_distribution_SO)
+
 
 
 #(A/C) calculate VE against severe outcomes by day
@@ -101,9 +102,9 @@ if (risk_group_toggle == "on"){
     this_outcome = severe_outcomes_list[o]
     for (i in 1:num_age_groups){
       this_age = age_group_labels[i]
-      row = severe_outcome_FINAL %>% filter(outcome == this_outcome & age_group == this_age)
+      this_row = severe_outcome_FINAL %>% filter(outcome == this_outcome & age_group == this_age)
       
-      IR = row$percentage
+      IR = this_row$percentage
       P = pop_setting$pop[pop_setting$age_group == this_age]
       P_general = pop_risk_group_dn$pop[pop_risk_group_dn$risk_group == 'general_public' & pop_risk_group_dn$age_group == this_age]
       P_risk = pop_risk_group_dn$pop[pop_risk_group_dn$risk_group == risk_group_name & pop_risk_group_dn$age_group == this_age]
@@ -112,8 +113,8 @@ if (risk_group_toggle == "on"){
       IR_gen = ((IR*P)/((RR_estimate*P_risk)/P_general +1))/P_general
       IR_risk = ((IR*P)/(P_general/(RR_estimate*P_risk) +1))/P_risk
       
-      row_gen = row %>% mutate(percentage = IR_gen,risk_group = 'general_public')
-      row_risk = row %>% mutate(percentage = IR_risk,risk_group = risk_group_name)
+      row_gen = this_row %>% mutate(percentage = IR_gen,risk_group = 'general_public')
+      row_risk = this_row %>% mutate(percentage = IR_risk,risk_group = risk_group_name)
       severe_outcome_FINAL_wRisk = rbind(severe_outcome_FINAL_wRisk,row_gen,row_risk)
     }
   }
@@ -121,7 +122,7 @@ if (risk_group_toggle == "on"){
   severe_outcome_FINAL_wRisk$percentage[is.na(severe_outcome_FINAL_wRisk$percentage)]=0
   severe_outcome_FINAL = severe_outcome_FINAL_wRisk
   
-  rm(IR_gen, IR_risk, row_gen, row_risk, severe_outcomes_list, severe_outcome_FINAL_wRisk, row, this_age, P, P_general, P_risk)
+  rm(IR_gen, IR_risk, row_gen, row_risk, severe_outcomes_list, severe_outcome_FINAL_wRisk, this_row, this_age, P, P_general, P_risk)
 }
 
 
@@ -136,16 +137,16 @@ if (risk_group_toggle == "on"){
     preterm_prev = 6.2/1000 
     preterm_risk = 1.47
     
-    row = crossing(outcome = 'neonatal_deaths',
+    this_row = crossing(outcome = 'neonatal_deaths',
                               outcome_long = 'adverse pregnancy outcome resulting in neonatal death',
                               age_group  = age_group_labels,
                               percentage = ((stillbirth_risk-1)*stillbirth_prev + (preterm_risk-1)*preterm_prev),
                               variant = strain_now,
                               outcome_VE = 'severe_disease',
                               risk_group = 'pregnant_women') 
-    severe_outcome_FINAL = bind_rows(severe_outcome_FINAL,row)
+    severe_outcome_FINAL = bind_rows(severe_outcome_FINAL,this_row)
     
-    rm(row, stillbirth_prev, stillbirth_risk, preterm_prev, preterm_risk)
+    rm(this_row, stillbirth_prev, stillbirth_risk, preterm_prev, preterm_risk)
   }
   
   severe_outcome_this_run = severe_outcome_FINAL %>% 

@@ -81,17 +81,17 @@ apply_risk_strategy <- function(
   }
   
   at_risk_delivery_outline = vax_strategy(vax_delivery_group = 'at_risk',
-                                            vax_dose_strategy              = vax_doses_risk,       
-                                            vax_strategy_roll_out_speed    = speed_risk_group_rollout,            
-                                            vax_strategy_max_expected_cov  = risk_group_acceptability,
-                                            vax_strategy_start_date        = vax_strategy_toggles$vax_strategy_start_date,
-                                            vax_strategy_num_doses         = vax_strategy_toggles$vax_strategy_num_doses,
-                                            vax_age_strategy               = vax_strategy_toggles$vax_age_strategy,            
-                                            vax_strategy_vaccine_type      = vax_strategy_toggles$vax_strategy_vaccine_type,            
-                                            vax_strategy_vaccine_interval  = vax_strategy_toggles$vax_strategy_vaccine_interval
+                                          vax_dose_strategy              = vax_doses_risk,       
+                                          vax_strategy_roll_out_speed    = speed_risk_group_rollout,            
+                                          vax_strategy_max_expected_cov  = risk_group_acceptability,
+                                          vax_strategy_start_date        = vax_strategy_toggles$vax_strategy_start_date,
+                                          vax_strategy_num_doses         = vax_strategy_toggles$vax_strategy_num_doses,
+                                          vax_age_strategy               = vax_strategy_toggles$vax_age_strategy,            
+                                          vax_strategy_vaccine_type      = vax_strategy_toggles$vax_strategy_vaccine_type,            
+                                          vax_strategy_vaccine_interval  = vax_strategy_toggles$vax_strategy_vaccine_interval
   )
   at_risk_delivery_outline = at_risk_delivery_outline %>% mutate(risk_group = risk_group_name)
-   
+  
   ggplot(at_risk_delivery_outline) + geom_point(aes(x=date,y=doses_delivered_this_date,color=as.factor(age_group),shape=as.factor(dose)))
   sum(at_risk_delivery_outline$doses_delivered_this_date)
   total = at_risk_delivery_outline %>% group_by(date) %>% summarise(doses_delivered_this_date = sum(doses_delivered_this_date),.groups = "keep")
@@ -136,8 +136,8 @@ apply_risk_strategy <- function(
     # filter(doses_delivered_this_date > 0 ) %>%
     limiter = limiter  %>% ungroup() %>% 
       mutate(doses_avaliable = vax_strategy_toggles$vax_strategy_roll_out_speed - doses_delivered_this_date,
-                                 day = as.numeric(date - min(limiter$date) + 1),
-                                 cumsum = cumsum(doses_avaliable)) #see line 315 in function vax strategy
+             day = as.numeric(date - min(limiter$date) + 1),
+             cumsum = cumsum(doses_avaliable)) #see line 315 in function vax strategy
     if (vax_doses_general>1){
       #check that second dose of general availability is = to first dose of general availability
       for (d in 2:vax_doses_general){
@@ -147,8 +147,8 @@ apply_risk_strategy <- function(
         limiter = limiter %>% left_join(workshop, by = "day")
         limiter = limiter %>% ungroup() %>% 
           mutate(doses_avaliable = case_when(
-          doses_avaliable>next_dose_avaliab ~ next_dose_avaliab,
-          TRUE ~ doses_avaliable)) %>%
+            doses_avaliable>next_dose_avaliab ~ next_dose_avaliab,
+            TRUE ~ doses_avaliable)) %>%
           mutate( cumsum = cumsum(doses_avaliable))
       }
     }
@@ -175,7 +175,7 @@ apply_risk_strategy <- function(
   ggplot(total) + geom_point(aes(x=date,y=doses_delivered_this_date))  
   
   vaccination_history_MODF = bind_rows(vaccination_history_TRUE,at_risk_delivery_outline,generalPublic_leftover_outline)
-
+  
   ###CHECKS
   #CHECK 1: total doses delivered <= total doses available
   if (risk_group_accessibility == FALSE){
@@ -238,22 +238,22 @@ apply_risk_strategy <- function(
         stop('Existing rollout doesnt align between risk groups')
       }
       if (max(vaccination_history_MODF$date[vaccination_history_MODF$risk_group == 'general_public']) !=
-            max(vaccination_history_MODF$date[vaccination_history_MODF$risk_group == risk_group_name])){
+          max(vaccination_history_MODF$date[vaccination_history_MODF$risk_group == risk_group_name])){
         if (vax_doses_risk==1){stop('max delivery dates dont align between risk groups (d=1)')
         } else if (abs(max(vaccination_history_MODF$date[vaccination_history_MODF$risk_group == 'general_public']) -
-                        max(vaccination_history_MODF$date[vaccination_history_MODF$risk_group == risk_group_name])) > 60){
+                       max(vaccination_history_MODF$date[vaccination_history_MODF$risk_group == risk_group_name])) > 60){
           warning('max delivery dates dont align between risk groups (d>1)')
         }
       }
     }
     if (vax_doses_general >= 2){
       if (unique(na.omit(round(hypoth_doses$cov[hypoth_doses$dose == 3 & hypoth_doses$risk_group == 'general_public'],digits=2))) != vax_strategy_toggles$vax_strategy_max_expected_cov){
-        warning('not all who are willing in the general public have recieved the booster dose')
+        warning('not all who are willing in the general public have recieved the first booster dose')
       }
     }
     if (vax_doses_risk >= 2){
       if (unique(na.omit(round(hypoth_doses$cov[hypoth_doses$dose == 3 & hypoth_doses$risk_group == risk_group_name],digits=2))) != vax_strategy_toggles$vax_strategy_max_expected_cov){
-        warning('not all who are willing in the risk group have recieved the booster dose')
+        warning('not all who are willing in the risk group have recieved the first booster dose')
       }
     }
   }

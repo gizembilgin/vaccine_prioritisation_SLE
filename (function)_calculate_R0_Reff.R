@@ -56,9 +56,9 @@ for (loop in 1:length(strain_list)){
   
   if (! round(R0_beta,digits = 2) == round(R0_to_fit,digits = 2)){stop('beta fitting is not working!')}
 
-  row = data.frame(beta_optimised[1],strain)
-  colnames(row) = c('beta_optimised','strain')
-  beta_fitted_values = rbind(beta_fitted_values,row)
+  this_row = data.frame(beta_optimised[1],strain)
+  colnames(this_row) = c('beta_optimised','strain')
+  beta_fitted_values = rbind(beta_fitted_values,this_row)
   
   NGM_R0_list[[loop]] = NGM_R0
 }

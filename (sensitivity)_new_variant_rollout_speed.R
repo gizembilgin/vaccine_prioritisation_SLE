@@ -44,10 +44,10 @@ for (ticket in 1:length(queue)){
   severe_outcome_projections = severe_outcome_log %>% 
     mutate(label = vax_strategy_description, 
            day = as.numeric(date - date_start ))
-  row = row %>% 
+  this_row = this_row %>% 
     mutate(scenario = vax_strategy_description) %>% 
-    relocate(scenario, .before = colnames(row)[[1]])
-  warehouse_table = rbind(warehouse_table,row)
+    relocate(scenario, .before = colnames(this_row)[[1]])
+  warehouse_table = rbind(warehouse_table,this_row)
   warehouse_plot = rbind(warehouse_plot,severe_outcome_projections)
 }
 #____________________________________________________________________________________________________________________________________

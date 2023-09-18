@@ -12,7 +12,12 @@
 
 if (setting == "SLE"){setting_long = "Sierra Leone"}
 if (exists("rootpath") == FALSE){rootpath = str_replace(getwd(), "vaccine_prioritisation_SLE","")}
-if (exists("num_risk_groups") == FALSE){num_risk_groups = 1}
+if (exists("num_risk_groups") == FALSE){
+  if (risk_group_toggle == "on"){
+    num_risk_groups = 2
+  } else{num_risk_groups = 1
+  }
+}
 if (exists("fitting") == FALSE){ fitting = "off" }
 if (exists("TOGGLE_websource_data") == FALSE){TOGGLE_websource_data = "off"}
 #______________________________________________________________________________________________________________________________________
@@ -217,8 +222,8 @@ if (TOGGLE_websource_data == "off"){
   ### CORRECT where doses admin < people with at least one dose
   workshop_correct = workshop[workshop$Doses_admin<workshop$People_at_least_one_dose,]
   while(nrow(workshop_correct)>0){
-    for (row in 1:nrow(workshop_correct)){
-      this_date = workshop_correct$Date[row]
+    for (this_row in 1:nrow(workshop_correct)){
+      this_date = workshop_correct$Date[this_row]
       #bring People_at_least_one_dose back to latest date that made sense
       workshop$People_at_least_one_dose[workshop$Date == this_date] = workshop$People_at_least_one_dose[workshop$Date == (this_date -1)]
     }
@@ -251,9 +256,9 @@ if (TOGGLE_websource_data == "off"){
     mutate(doses_delivered_this_date = num - lag(num)) %>%
     filter(doses_delivered_this_date < 0)
   while(nrow(workshop_correct)>0){
-    for (row in 1:nrow(workshop_correct)){
-      this_dose = workshop_correct$dose[row]
-      this_date = workshop_correct$date[row]
+    for (this_row in 1:nrow(workshop_correct)){
+      this_dose = workshop_correct$dose[this_row]
+      this_date = workshop_correct$date[this_row]
       
       vaccination_history$num[vaccination_history$date == this_date & vaccination_history$dose == this_dose ] = 
         vaccination_history$num[vaccination_history$date == (this_date-1) & vaccination_history$dose == this_dose ]
@@ -281,10 +286,10 @@ if (TOGGLE_websource_data == "off"){
     left_join(timing_check, by = c("date", "dose")) %>%
     filter(dose1_avaliable < cum_doses)
   
-  for (row in 1:nrow(timing_check)){
-    this_date = timing_check$date[row]-vaxCovDelay$delay[vaxCovDelay$dose == 1]
+  for (this_row in 1:nrow(timing_check)){
+    this_date = timing_check$date[this_row]-vaxCovDelay$delay[vaxCovDelay$dose == 1]
     vaccination_history$num[vaccination_history$dose == 1 & vaccination_history$date == this_date] =
-      vaccination_history$num[vaccination_history$dose == 1 & vaccination_history$date == this_date] + timing_check$cum_doses[row]
+      vaccination_history$num[vaccination_history$dose == 1 & vaccination_history$date == this_date] + timing_check$cum_doses[this_row]
   }
   
   

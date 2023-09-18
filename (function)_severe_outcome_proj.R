@@ -168,7 +168,7 @@ if (age_split_results == "N"){
 }
 
 #create row for table comparing vaccine strategies
-row = severe_outcome_log %>% 
+this_row = severe_outcome_log %>% 
   filter(date == max(severe_outcome_log$date)) %>%
   select(-c(proj,date)) %>%
   pivot_wider(names_from=outcome,

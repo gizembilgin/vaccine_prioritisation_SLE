@@ -73,8 +73,8 @@ for (ticket in 1:length(queue)){
     mutate(label = vax_strategy_description, day = as.numeric(date - date_start ))
   warehouse_plot = rbind(warehouse_plot,severe_outcome_projections)
   
-  row = row %>% mutate(scenario = vax_strategy_description) %>% relocate(scenario, .before = colnames(row)[[1]])
-  warehouse_table = rbind(warehouse_table,row)
+  this_row = this_row %>% mutate(scenario = vax_strategy_description) %>% relocate(scenario, .before = colnames(this_row)[[1]])
+  warehouse_table = rbind(warehouse_table,this_row)
 }
 
 age_split_results = "N"

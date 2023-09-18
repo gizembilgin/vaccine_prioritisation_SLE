@@ -46,8 +46,8 @@ for (ticket in 1:length(queue)){
            day = as.numeric(date - max(seed_date) )) # day = start of outbreak
   warehouse_plot = rbind(warehouse_plot,severe_outcome_projections)
   
-  row = row %>% mutate(scenario = vax_strategy_description) %>% relocate(scenario, .before = colnames(row)[[1]])
-  warehouse_table = rbind(warehouse_table,row)
+  this_row = this_row %>% mutate(scenario = vax_strategy_description) %>% relocate(scenario, .before = colnames(this_row)[[1]])
+  warehouse_table = rbind(warehouse_table,this_row)
 }
 #____________________________________________________________________________________________________________________________________
 
