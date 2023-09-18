@@ -87,7 +87,7 @@ if (fitting == "on"){
   #   warning('refitting model as fitted_max_date over one month since today!')
   #   source(paste(getwd(),"/(0)_fitting_model.R",sep=""))
   # } else{
-    load(file = '1_inputs/fitted_results.Rdata')
+  load(file = '1_inputs/fitted_results.Rdata')
     
     if('additional_doses' %in% names(sensitivity_analysis_toggles)){
       if (sensitivity_analysis_toggles$additional_doses == 'start_2022'){
@@ -123,7 +123,7 @@ if (fitting == "on"){
       fitted_incidence_log$daily_cases = fitted_incidence_log$daily_cases * sensitivity_analysis_toggles$modification_factor_on_preexisting_immunity
       fitted_incidence_log_tidy$incidence = fitted_incidence_log_tidy$incidence  * sensitivity_analysis_toggles$modification_factor_on_preexisting_immunity
       
-      workshop <- fitted_next_state %>%
+      fitted_next_state <- fitted_next_state %>%
         pivot_wider(names_from = "class", 
                     values_from = "pop") %>%
         mutate(S_new = S - (sensitivity_analysis_toggles$modification_factor_on_preexisting_immunity - 1) * R,
