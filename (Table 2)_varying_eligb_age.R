@@ -31,7 +31,8 @@ for (i in 1:length(target_list)){
   target = target_list[[i]]
   target_percentage = target * 100
   workshop_doses = target - sum(vaccination_history_POP$coverage_this_date[vaccination_history_POP$date == max(vaccination_history_POP$date) & vaccination_history_POP$dose == 1])/100
-  workshop_doses = round(workshop_doses * sum(pop))
+  workshop_doses = round(workshop_doses * sum(pop)) * vax_strategy_toggles_CURRENT_TARGET$vax_dose_strategy #ATTENTION: times two for double-dose vaccine!!!
+
   this_vax_strategy = vax_strategy_toggles_CURRENT_TARGET
   this_vax_strategy$vax_strategy_num_doses = as.integer(workshop_doses)
   this_vax_strategy$vax_age_strategy = "adults_then_children"
@@ -48,7 +49,8 @@ for (i in 1:length(target_list)){
   target = target_list[[i]]
   target_percentage = target * 100
   workshop_doses = target - sum(vaccination_history_POP$coverage_this_date[vaccination_history_POP$date == max(vaccination_history_POP$date) & vaccination_history_POP$dose == 1])/100
-  workshop_doses = round(workshop_doses * sum(pop))
+  workshop_doses = round(workshop_doses * sum(pop)) * vax_strategy_toggles_CURRENT_TARGET$vax_dose_strategy #ATTENTION: times two for double-dose vaccine!!!
+  
   this_vax_strategy = vax_strategy_toggles_CURRENT_TARGET
   this_vax_strategy$vax_strategy_num_doses = as.integer(workshop_doses)
   this_vax_strategy$vax_age_strategy = "uniform"
