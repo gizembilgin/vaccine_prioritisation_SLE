@@ -101,8 +101,8 @@ queue[[8]] = list(vax_strategy_description = 'broaden to <18 pregnant individual
 if ('additional_doses' %in% names(sensitivity_analysis_toggles)){
   queue = queue[c(1:4)]
 }
+
 for (ticket in 1:length(queue)){
-  
   commands = queue[[ticket]]
   
   VE_loop = 0
@@ -126,11 +126,11 @@ for (ticket in 1:length(queue)){
   severe_outcome_projections = severe_outcome_log %>% 
     mutate(label = vax_strategy_description, day = as.numeric(date - date_start ))
   warehouse_plot = rbind(warehouse_plot,severe_outcome_projections)
-  row = row %>% 
+  this_row = this_row %>% 
     mutate(scenario                    = vax_strategy_description,
            date_complete_at_risk_group = date_complete_at_risk_group) %>% 
-    relocate(scenario, .before = colnames(row)[[1]])
-  warehouse_table = rbind(warehouse_table,row)
+    relocate(scenario, .before = colnames(this_row)[[1]])
+  warehouse_table = rbind(warehouse_table,this_row)
   
   
   ### code for RR sensitivity analysis
@@ -141,15 +141,15 @@ for (ticket in 1:length(queue)){
     for (RR_loop in 1:length(RR_to_test_list)){
       RR_estimate = RR_to_test_list[[RR_loop]]
       
-      source(paste(getwd(),"/(5)_severe_outcomes_calc.R",sep="")) 
-      source(paste(getwd(),"/(function)_severe_outcome_proj.R",sep=""))
+      source(paste0(getwd(),"/(5)_severe_outcomes_calc.R")) 
+      source(paste0(getwd(),"/(function)_severe_outcome_proj.R"))
       
-      row = row %>% mutate(scenario = vax_strategy_description,
+      this_row = this_row %>% mutate(scenario = vax_strategy_description,
                            RR_estimate = RR_estimate) %>% 
-        relocate(scenario, .before = colnames(row)[[1]])
-      SA_RR_warehouse_table = rbind(SA_RR_warehouse_table,row)
+        relocate(scenario, .before = colnames(this_row)[[1]])
+      SA_RR_warehouse_table = rbind(SA_RR_warehouse_table,this_row)
     }
-    save(SA_RR_warehouse_table,file =  paste(rootpath,"x_results/sensitivity_analysis_RR_",Sys.Date(),".Rdata",sep=''))
+    save(SA_RR_warehouse_table,file =  paste0(rootpath,"x_results/sensitivity_analysis_RR_",Sys.Date(),".Rdata"))
     RR_estimate = RR_default
   }
   
@@ -164,7 +164,7 @@ for (ticket in 1:length(queue)){
       select(-date_complete_at_risk_group) %>%
       mutate(VE_mod = 'none')
     } else{
-      workshop = row %>% 
+      workshop = this_row %>% 
         select(-date_complete_at_risk_group) %>%
         mutate(VE_mod = 'none')
       SA_VE_warehouse_table = rbind(SA_VE_warehouse_table,workshop)
@@ -177,10 +177,10 @@ for (ticket in 1:length(queue)){
       source(paste(getwd(),"/(5)_severe_outcomes_calc.R",sep="")) 
       source(paste(getwd(),"/(function)_severe_outcome_proj.R",sep=""))
       
-      row = row %>% mutate(scenario = vax_strategy_description,
+      this_row = this_row %>% mutate(scenario = vax_strategy_description,
                            VE_mod = this_sensitivity_analysis) %>% 
-        relocate(scenario, .before = colnames(row)[[1]])
-      SA_VE_warehouse_table = rbind(SA_VE_warehouse_table,row)
+        relocate(scenario, .before = colnames(this_row)[[1]])
+      SA_VE_warehouse_table = rbind(SA_VE_warehouse_table,this_row)
       
       sensitivity_analysis_toggles = sensitivity_analysis_toggles[!names(sensitivity_analysis_toggles) %in% c('VE_adults_comorb')] #remove for second loop
     }
