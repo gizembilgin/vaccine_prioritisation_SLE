@@ -1,0 +1,18 @@
+       # copy into line 220 after the delivery of booster doses in (4)_time_step
+
+	# boosters_to_date = vaccination_history_FINAL %>% 
+        #   filter(date <= as.Date(date_now) - vaxCovDelay$delay[vaxCovDelay$dose == 2]) %>%
+        #   filter(risk_group == "pregnant_women") %>%
+        #   filter(schedule == "booster") %>%
+        #   group_by(risk_group,dose,vaccine_type,FROM_vaccine_type,FROM_dose) %>%
+        #   summarise(sum = sum(doses_delivered_this_date))
+        # boosters_to_date = sum(boosters_to_date$sum)
+        # 
+        # boosted_individuals = next_state %>% 
+        #   filter(risk_group == "pregnant_women")%>% 
+        #   group_by(risk_group,dose,vaccine_type) %>%
+        #   summarise(sum = round(sum(pop))) %>%
+        #   filter(dose == booster_dose_number & vaccine_type == "Johnson & Johnson")
+        # boosted_individuals = sum(boosted_individuals$sum)
+        # 
+        # if(round(boosted_individuals) != round(boosters_to_date)){stop("what happened here?")}
