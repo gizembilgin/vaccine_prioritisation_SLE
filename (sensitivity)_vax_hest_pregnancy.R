@@ -34,7 +34,10 @@ fitting = "on"; plotting = "on"
 date_start = as.Date('2021-03-31')
 strain_inital = strain_now = 'WT' 
 seed_date = c(as.Date('2021-04-25'),as.Date('2021-09-01')) #first is seed date for delta, second is omicron
-model_weeks = as.numeric((Sys.Date()+1-date_start)/7)
+#previously had let the fitted_max_date Sys.Date()
+#now during the first round of peer review (September 2023) let's set it to be the 1st of August to align with the previous results
+fitted_max_date = as.Date('2022-08-01')
+model_weeks = as.numeric((fitted_max_date+1-date_start)/7)
 
 outbreak_timing = "off"
 vax_strategy_toggle = "off"
@@ -91,6 +94,7 @@ waning_toggle_severe_outcome = TRUE
 
 #set up setting
 setting = "SLE"
+source(paste(getwd(),"/(1)_simulate_setting.R",sep=""))
 if (setting == "SLE"){
   gov_target = 0.516
   workshop_doses = gov_target - sum(vaccination_history_POP$coverage_this_date[vaccination_history_POP$date == max(vaccination_history_POP$date) & vaccination_history_POP$dose == 1])/100
