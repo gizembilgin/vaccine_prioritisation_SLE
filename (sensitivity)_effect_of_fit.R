@@ -55,16 +55,16 @@ if (setting == "SLE"){
 #initialise data frame
 results_warehouse = list()
 sensitivity_analysis_toggles = list()
-queue = list(
+effect_of_fit_queue = list(
   list(modification_factor_on_preexisting_immunity = 0.5),
   list(modification_factor_on_preexisting_immunity = 1.5)
 )
 receipt = 0
 #_______________________________________________________________________________
 
-for (place_in_queue in 1:length(queue)){
+for (place_in_queue in 1:length(effect_of_fit_queue)){
   
-  sensitivity_analysis_toggles = queue[[place_in_queue]]
+  sensitivity_analysis_toggles = effect_of_fit_queue[[place_in_queue]]
   
   ###(Table 2) prioritisation strategies including children 5 to 17
   receipt = receipt + 1
