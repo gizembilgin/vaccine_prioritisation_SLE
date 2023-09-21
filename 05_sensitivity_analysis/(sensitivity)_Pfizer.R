@@ -61,7 +61,7 @@ sensitivity_analysis_toggles = list()
 
 ###(Table 2) prioritisation strategies including children 5 to 17
 receipt = 1
-source(paste(getwd(),"/(Table 2)_varying_eligb_age.R",sep=""))
+source("04_results_generation/(Table 2)_varying_eligb_age.R")
 #________________________________________________________________________________________________________________
 
 
@@ -69,11 +69,11 @@ source(paste(getwd(),"/(Table 2)_varying_eligb_age.R",sep=""))
 ###(Table 3) prioritisation of high-risk groups
 receipt = 2
 risk_group_name = "pregnant_women"
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep=""))
+source("04_results_generation/(Table 3) high-risk groups.R")
 
 receipt = 3
 risk_group_name = "adults_with_comorbidities"
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep="")) 
+source("04_results_generation/(Table 3) high-risk groups.R")
 
 risk_group_toggle = "off"
 vax_risk_strategy_toggle = "off"

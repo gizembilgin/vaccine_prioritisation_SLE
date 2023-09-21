@@ -119,7 +119,7 @@ if (setting == "SLE"){
 ### run results::(Table 3) At risk group analysis
 receipt = 2
 risk_group_name = "pregnant_women"
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep=""))
+source("04_results_generation/(Table 3) high-risk groups.R")
 #________________________________________________________________________________________________________________
 
 

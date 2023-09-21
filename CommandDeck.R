@@ -209,11 +209,11 @@ num_vax_classes = num_vax_doses*num_vax_types + 1 # + 1 for unvaccinated
 
 
 ##(B) Load functions
-source(paste(getwd(),"/(function)_COVID_ODE.R",sep=""))
-source(paste(getwd(),"/(function)_VE_time_step.R",sep=""))
-source(paste(getwd(),"/(function)_rho_time_step.R",sep=""))
-source(paste(getwd(),"/(function)_vax_strategies.R",sep=""))
-source(paste(getwd(),"/(function)_vax_strategies_risk.R",sep=""))
+source("03_functions/(function)_COVID_ODE.R")
+source("03_functions/(function)_VE_time_step.R")
+source("03_functions/(function)_rho_time_step.R")
+source("03_functions/(function)_vax_strategies.R")
+source("03_functions/(function)_vax_strategies_risk.R")
 if (exists("VE_estimates_imputed") == FALSE){load(file='01_inputs/VE_estimates_imputed.Rdata')}
 
 
@@ -225,7 +225,7 @@ for (run_number in 1:complete_model_runs){
   source(paste(getwd(),"/(4)_time_step.R",sep=""))
   source(paste(getwd(),"/(5)_severe_outcomes_calc.R",sep="")) # COMEBACK - should this just save its results somewhere?
   incidence_log_tracker <-rbind(incidence_log_tracker,incidence_log[,c('daily_cases','date')])
-  source(paste(getwd(),"/(function)_severe_outcome_proj.R",sep=""))
+  source(paste(getwd(),"/(6)_severe_outcome_proj.R",sep=""))
 }
 
 if (complete_model_runs>1){

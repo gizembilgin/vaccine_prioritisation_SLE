@@ -48,12 +48,12 @@ if (setting == "SLE"){
 ###(Table 3) prioritisation of high-risk groups
 receipt = 2
 risk_group_name = "pregnant_women"
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep=""))
+source("04_results_generation/(Table 3) high-risk groups.R")
 #________________________________________________________________________________________________________________
 
 receipt = 3
 risk_group_name = "adults_with_comorbidities"
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep="")) 
+source("04_results_generation/(Table 3) high-risk groups.R")
 #________________________________________________________________________________________________________________
 #################################################################################################################
 
@@ -120,7 +120,7 @@ booster_toggles = list(start_date = as.Date('2023-01-01'),
 booster_prioritised_strategies = list(strategy = 'Y',
                                       risk_proportion = 99)
 
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep=""))
+source("04_results_generation/(Table 3) high-risk groups.R")
 #________________________________________________________________________________________________________________
 
 receipt = 3
@@ -135,7 +135,7 @@ booster_toggles = list(start_date = as.Date('2023-01-01'),
                        vaccine_type = vax_strategy_toggles_CURRENT_TARGET$vax_strategy_vaccine_type,
                        vaccine_interval = 90)
 
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep="")) 
+source("04_results_generation/(Table 3) high-risk groups.R") 
 #________________________________________________________________________________________________________________
 #################################################################################################################
 

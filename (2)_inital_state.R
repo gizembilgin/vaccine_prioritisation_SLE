@@ -97,10 +97,10 @@ if ('FROM_vaccine_type' %in% names(vaccination_history_FINAL)){
 ### sensitivity analysis - booster doses in 2023
 if (exists("booster_toggles") == FALSE){booster_toggles = list()}
 if (length(booster_toggles)>1){
-  source(paste(getwd(),"/(function)_booster_dose_delivery.R",sep=""))
+  source("03_functions/(function)_booster_dose_delivery.R")
 
   if (length(booster_prioritised_strategies)>1){
-    source(paste(getwd(),"/(function)_prioritised_booster_dose_delivery.R",sep=""))
+    source("03_functions/(function)_prioritised_booster_dose_delivery.R")
     
     vaccination_history_FINAL =
       booster_strategy_prioritised(
@@ -564,7 +564,7 @@ if (waning_toggle_rho_acqusition == TRUE ){
 }
 if (rho_inital > 1){stop('rho is > 1')}
 
-source(paste(getwd(),"/(function)_calculate_R0_Reff.R",sep=""))
+source("03_functions/(function)_calculate_R0_Reff.R")
 beta = rep(beta_fitted_values$beta_optimised[beta_fitted_values$strain == strain_inital],num_age_groups)
 #________________________________________________________________
 

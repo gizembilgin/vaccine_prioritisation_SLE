@@ -68,7 +68,7 @@ for (place_in_queue in 1:length(effect_of_fit_queue)){
   
   ###(Table 2) prioritisation strategies including children 5 to 17
   receipt = receipt + 1
-  source(paste(getwd(),"/(Table 2)_varying_eligb_age.R",sep=""))
+  source("04_results_generation/(Table 2)_varying_eligb_age.R")
   #_____________________________________________________________________________
   
   
@@ -76,11 +76,11 @@ for (place_in_queue in 1:length(effect_of_fit_queue)){
   ###(Table 3) prioritisation of high-risk groups
   receipt = receipt + 1
   risk_group_name = "pregnant_women"
-  source(paste(getwd(),"/(Table 3) high-risk groups.R",sep=""))
+  source("04_results_generation/(Table 3) high-risk groups.R")
   
   receipt = receipt + 1
   risk_group_name = "adults_with_comorbidities"
-  source(paste(getwd(),"/(Table 3) high-risk groups.R",sep="")) 
+  source("04_results_generation/(Table 3) high-risk groups.R")
   
   risk_group_toggle = "off"
   vax_risk_strategy_toggle = "off"

@@ -60,7 +60,7 @@ sensitivity_analysis_toggles = list()
 
 ###(Table 2) prioritisation strategies including children 5 to 17
 receipt = 1
-source(paste(getwd(),"/(Table 2)_varying_eligb_age.R",sep=""))
+source("04_results_generation/(Table 2)_varying_eligb_age.R")
 #________________________________________________________________________________________________________________
 
 
@@ -69,12 +69,12 @@ source(paste(getwd(),"/(Table 2)_varying_eligb_age.R",sep=""))
 receipt = 2
 risk_group_name = "pregnant_women"
 sensitivity_analysis_toggles = list()
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep=""))
+source("04_results_generation/(Table 3) high-risk groups.R")
 
 receipt = 3
 risk_group_name = "adults_with_comorbidities"
 sensitivity_analysis_toggles = list()
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep="")) 
+source("04_results_generation/(Table 3) high-risk groups.R")
 
 risk_group_toggle = "off"
 vax_risk_strategy_toggle = "off"
@@ -84,9 +84,9 @@ vax_risk_strategy_toggle = "off"
 
 ###(Figure S4.2) outbreak of a new immune-escape variant
 receipt = 4
-source(paste(getwd(),"/(sensitivity)_new_variant_timing_of_outbreak.R",sep=""))
+source("05_sensitivity_analysis/(sensitivity)_new_variant_timing_of_outbreak.R")
 receipt = 5
-source(paste(getwd(),"/(sensitivity)_new_variant_rollout_speed.R",sep=""))
+source("05_sensitivity_analysis/(sensitivity)_new_variant_rollout_speed.R")
 
 results_warehouse[[4]][[3]]
 results_warehouse[[5]][[3]]
@@ -98,12 +98,12 @@ results_warehouse[[5]][[3]]
 receipt = 6
 sensitivity_analysis_toggles = list(RR_risk_group = list(1,1.5,2.4,3))
 risk_group_name = "pregnant_women"
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep=""))
+source("04_results_generation/(Table 3) high-risk groups.R")
 
 receipt = 7
 sensitivity_analysis_toggles = list(RR_risk_group = list(1,1.5,1.95,3))
 risk_group_name = "adults_with_comorbidities"
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep="")) 
+source("04_results_generation/(Table 3) high-risk groups.R") 
 #________________________________________________________________________________________________________________
 
 
@@ -112,19 +112,19 @@ source(paste(getwd(),"/(Table 3) high-risk groups.R",sep=""))
 #(Table S4.4) allocating vaccines to children with reduced vaccine effectiveness in older adults
 receipt = 8
 sensitivity_analysis_toggles = list(VE_older_adults = "reduced")
-source(paste(getwd(),"/(Table 2)_varying_eligb_age.R",sep=""))
+source("04_results_generation/(Table 2)_varying_eligb_age.R")
 
 #(Table S4.5) allocating vaccines to pregnant women with reduced vaccine effectiveness in older adults
 receipt = 9
 risk_group_name = "pregnant_women"
 sensitivity_analysis_toggles = list(VE_older_adults = "reduced")
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep=""))
+source("04_results_generation/(Table 3) high-risk groups.R")
 
 #(Table S4.5 & S4.6) allocating vaccines to high-risk adults with reduced vaccine effectiveness in older adults and/or adults with comorbidities
 receipt = 10
 risk_group_name = "adults_with_comorbidities"
 sensitivity_analysis_toggles = list(VE_older_adults = "reduced",VE_adults_comorb = 0.9)
-source(paste(getwd(),"/(Table 3) high-risk groups.R",sep="")) 
+source("04_results_generation/(Table 3) high-risk groups.R")
 
 sensitivity_analysis_toggles = list()
 #________________________________________________________________________________________________________________
