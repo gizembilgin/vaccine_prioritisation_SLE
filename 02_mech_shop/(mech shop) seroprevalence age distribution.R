@@ -56,7 +56,9 @@ workshop = SLE_pop %>%
 pop_MODEL = SLE_pop %>%
   group_by(agegroup_MODEL) %>%
   summarise(pop = sum(population))
-check = workshop %>% left_join(pop_MODEL) %>% mutate(interim = seroprev * pop /sum(pop_MODEL$pop))
+check = workshop %>% 
+  left_join(pop_MODEL,by = join_by(agegroup_MODEL)) %>% 
+  mutate(interim = seroprev * pop /sum(pop_MODEL$pop))
 sum(check$interim) #=2.6
 
 #SAVE
