@@ -31,7 +31,7 @@ if ( debug == "on"){
   ## options for run from fit with omicron onwards
   outbreak_timing = "off"
   strain_inital = strain_now = 'omicron'             
-  load(file = '1_inputs/last_fit_date.Rdata')
+  load(file = '01_inputs/last_fit_date.Rdata')
   date_start = fitted_max_date
   model_weeks = 5          
   
@@ -82,16 +82,16 @@ if ( debug == "on"){
 if (fitting == "on"){
   warning('Fitting is on')
 } else if ( ! 'vax_hesistancy_risk_group' %in% names(sensitivity_analysis_toggles)){
-  load(file = '1_inputs/last_fit_date.Rdata')
+  load(file = '01_inputs/last_fit_date.Rdata')
   # if (as.numeric(abs(fitted_max_date - Sys.Date()))>30 ){ 
   #   warning('refitting model as fitted_max_date over one month since today!')
   #   source(paste(getwd(),"/(0)_fitting_model.R",sep=""))
   # } else{
-  load(file = '1_inputs/fitted_results.Rdata')
+  load(file = '01_inputs/fitted_results.Rdata')
     
     if('additional_doses' %in% names(sensitivity_analysis_toggles)){
       if (sensitivity_analysis_toggles$additional_doses == 'start_2022'){
-        load(file = '1_inputs/fitted_results_SA_2022.Rdata')
+        load(file = '01_inputs/fitted_results_SA_2022.Rdata')
       }
     }
     
@@ -142,7 +142,7 @@ if (fitting == "on"){
     
     if (! risk_group_name == 'pregnant_women'){stop('havent configured vax hesistance sensitivity analysis for another risk group')}
     
-    load(file = '1_inputs/SA_vaxHest_fitted_results.Rdata')
+    load(file = '01_inputs/SA_vaxHest_fitted_results.Rdata')
     loaded_fit = SA_vaxHest_fitted_results
        
     parameters = loaded_fit[[1]]
@@ -214,7 +214,7 @@ source(paste(getwd(),"/(function)_VE_time_step.R",sep=""))
 source(paste(getwd(),"/(function)_rho_time_step.R",sep=""))
 source(paste(getwd(),"/(function)_vax_strategies.R",sep=""))
 source(paste(getwd(),"/(function)_vax_strategies_risk.R",sep=""))
-if (exists("VE_estimates_imputed") == FALSE){load(file='1_inputs/VE_estimates_imputed.Rdata')}
+if (exists("VE_estimates_imputed") == FALSE){load(file='01_inputs/VE_estimates_imputed.Rdata')}
 
 
 ##(C) Run the model!

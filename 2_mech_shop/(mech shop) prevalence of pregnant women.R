@@ -6,8 +6,8 @@
 
 
 ### read in data
-ASFR = read.csv("1_inputs/DHS_ASFR.csv",header=TRUE)
-women_pop = read.csv("1_inputs/pop_estimates_female.csv", header=TRUE)
+ASFR = read.csv("01_inputs/DHS_ASFR.csv",header=TRUE)
+women_pop = read.csv("01_inputs/pop_estimates_female.csv", header=TRUE)
 
 
 ### add 10-14 pregnancy as reported in DHS 2019 with retrospective data
@@ -95,4 +95,4 @@ ggplot(data=prevalence_pregnancy) +
   ylab("model age groups") + 
   labs(title="") 
 
-save(prevalence_pregnancy, file = "1_inputs/prevalence_pregnancy.Rdata")
+save(prevalence_pregnancy, file = "01_inputs/prevalence_pregnancy.Rdata")

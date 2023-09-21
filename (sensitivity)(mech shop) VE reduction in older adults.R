@@ -15,7 +15,7 @@ plotting_standard =  theme_bw() +
 
 
 ### (1) SPEED OF WANING ##############################################################################################################################################
-raw <- read.csv(file = '1_inputs/VE_severe_outcomes.csv',header=TRUE)
+raw <- read.csv(file = '01_inputs/VE_severe_outcomes.csv',header=TRUE)
 
 predicted_distribution = data.frame()
 subplot_list = list()
@@ -166,8 +166,8 @@ grid.arrange(plot_dose2,plot_dose3, nrow=2)
 
 
 ### APPLY TO POINT ESTIMATES ##################################################################################################################################
-load(file = "1_inputs/VE_estimates_imputed.Rdata")
-load(file = "1_inputs/VE_booster_estimates.Rdata")
+load(file = "01_inputs/VE_estimates_imputed.Rdata")
+load(file = "01_inputs/VE_booster_estimates.Rdata")
 
 point_estimates = VE_estimates_imputed %>% 
   filter(outcome_family == 'severe_outcome' & !(vaccine_type == 'Pfizer' & dose == 3)) %>%
@@ -223,5 +223,5 @@ no_waning = together %>% mutate(waning = FALSE) %>%
 
 ### SAVE ##################################################################################################################################
 SA_VE_older_muted_SO = rbind(waning,no_waning) %>% select(strain, vaccine_type,primary_if_booster, dose, outcome,days,age_group,VE_days,waning)
-save(SA_VE_older_muted_SO, file = '1_inputs/SA_VE_older_muted_SO.Rdata')
+save(SA_VE_older_muted_SO, file = '01_inputs/SA_VE_older_muted_SO.Rdata')
 #_________________________________________________________________________________________________________________________________________

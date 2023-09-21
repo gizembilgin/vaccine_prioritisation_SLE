@@ -8,7 +8,7 @@ rm(list=ls())
 
 
 ###(1/3) Load distribution
-andrews <- read.csv(file = '1_inputs/VE_Andrews_shape.csv',header=TRUE)
+andrews <- read.csv(file = '01_inputs/VE_Andrews_shape.csv',header=TRUE)
 
 ### INITIAL VISULALISATION 
 dose_number = 2
@@ -83,7 +83,7 @@ ggplot() +
         panel.border = element_blank(),
         axis.line = element_line(color = 'black'))
 
-save(predicted_distribution, file = '1_inputs/VE_predicted_distribution.Rdata')
+save(predicted_distribution, file = '01_inputs/VE_predicted_distribution.Rdata')
 
 
 
@@ -120,7 +120,7 @@ direct = apply_distribution %>%
 # (2) dose 1 and 2 from 'closest' vaccine (mode = viral) i.e. AZ for J&J, Sinopharm and Sinovac
 #         Note: possible issue with J&J and later boosters
 D = 2
-load(file = "1_inputs/VE_estimates_imputed.Rdata")
+load(file = "01_inputs/VE_estimates_imputed.Rdata")
 
 imputed = data.frame()
 for (s in c('omicron','delta')){
@@ -202,4 +202,4 @@ no_waning = together %>% mutate(waning = FALSE) %>%
   mutate(VE_days = max(VE_days))
 
 VE_waning_distribution = rbind(waning,no_waning) %>% select(strain,vaccine_type,dose,days,VE_days,waning)
-save(VE_waning_distribution, file = '1_inputs/VE_waning_distribution.Rdata')
+save(VE_waning_distribution, file = '01_inputs/VE_waning_distribution.Rdata')

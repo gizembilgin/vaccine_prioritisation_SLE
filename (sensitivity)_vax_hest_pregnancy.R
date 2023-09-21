@@ -55,8 +55,8 @@ SA_vaxHest_fitted_results = list(parameters,next_state,SA_vaxHest_fitted_inciden
 grid.arrange(plot1,plot2,plot3,plot4,plot5, layout_matrix = lay)
 
 SA_vaxHest_fitted_max_date = date_now-1
-save(SA_vaxHest_fitted_max_date,file = '1_inputs/SA_vaxHest_last_fit_date.Rdata')
-save(SA_vaxHest_fitted_results, file = '1_inputs/SA_vaxHest_fitted_results.Rdata')
+save(SA_vaxHest_fitted_max_date,file = '01_inputs/SA_vaxHest_last_fit_date.Rdata')
+save(SA_vaxHest_fitted_results, file = '01_inputs/SA_vaxHest_fitted_results.Rdata')
 
 #CHECK 
 coeff <- 1/2000
@@ -82,7 +82,7 @@ fitting = "off"
 
 #### generic toggles
 #load fit
-load(file = '1_inputs/SA_vaxHest_last_fit_date.Rdata')
+load(file = '01_inputs/SA_vaxHest_last_fit_date.Rdata')
 date_start = SA_vaxHest_fitted_max_date ##latest fit date
 
 #initialise length of model run and circulating strain

@@ -64,7 +64,7 @@ rm(list=ls())
 
 sensitivity_analysis_toggles = list(additional_doses = 'booster_doses_2023')  #to skip queue 5 onwards in Table 3 call
 
-load(file = '1_inputs/last_fit_date.Rdata')
+load(file = '01_inputs/last_fit_date.Rdata')
 date_start = fitted_max_date 
 
 strain_inital = strain_now = 'omicron' 

@@ -39,7 +39,7 @@ rho_dn_wide = rho_dn %>%
 
 
 ### (2) Shape of introduction ###############################################################################
-intro_raw <- read.csv("1_inputs/GISAID_omicron_intro_Africa.csv", header=TRUE)
+intro_raw <- read.csv("01_inputs/GISAID_omicron_intro_Africa.csv", header=TRUE)
 intro_raw$date = as.Date(intro_raw$date, '%d/%m/%Y')
 
 intro_raw = intro_raw %>% 

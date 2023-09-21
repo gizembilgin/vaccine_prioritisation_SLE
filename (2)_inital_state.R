@@ -275,7 +275,7 @@ if(nrow(check)>1){stop('inital vaccine coverage > 100%')}
 
 
 #(B/B) Vaccine Effectiveness (VE)
-load( file = '1_inputs/VE_waning_distribution.Rdata')
+load( file = '01_inputs/VE_waning_distribution.Rdata')
 VE_waning_distribution = VE_waning_distribution %>%
   filter(waning == waning_toggle_acqusition) %>%
   mutate(outcome = 'any_infection')
@@ -320,12 +320,12 @@ if (fitting == "off"){
 
 
 ###### (2/5) Seroprevalence
-load(file = "1_inputs/seroprev.Rdata")
+load(file = "01_inputs/seroprev.Rdata")
 seroprev = seroprev %>%
   filter(setting == setting & 
            year == as.numeric(format(date_start, format="%Y")))
 if (as.numeric(format(date_start, format="%Y")) > 2022){
-  load(file = "1_inputs/seroprev.Rdata")
+  load(file = "01_inputs/seroprev.Rdata")
   seroprev = seroprev[seroprev$setting == setting & seroprev$year ==  2022,]
 }
 if('modification_factor_on_preexisting_immunity' %in% names(sensitivity_analysis_toggles)){

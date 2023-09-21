@@ -3,7 +3,7 @@
 strain_now = strain_inital
 
 ### (A/D) Transmission
-load(file = "1_inputs/param_age.Rdata")
+load(file = "01_inputs/param_age.Rdata")
 suscept = param_age$value[param_age$param == 'susceptibility']    # (i) age-specific susceptibility to infection
 suscept = rep(1,num_age_groups)
 gamma   = param_age$value[param_age$param == 'prop_sympt']        # (ii) proportion of cases symptomatic

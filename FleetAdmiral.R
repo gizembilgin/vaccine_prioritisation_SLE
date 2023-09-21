@@ -11,7 +11,7 @@ rm(list=ls())
 time.start.FleetAdmiral=proc.time()[[3]]
 
 #load latest fit
-load(file = '1_inputs/last_fit_date.Rdata')
+load(file = '01_inputs/last_fit_date.Rdata')
 date_start = fitted_max_date 
 
 #initialise length of model run and circulating strain

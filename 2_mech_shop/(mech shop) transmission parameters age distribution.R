@@ -1,6 +1,6 @@
 ### This (mech shop) translates transmission parameter estimates to model age groups.
 
-raw = read.csv("1_inputs/model_param_raw.csv",header=TRUE)
+raw = read.csv("01_inputs/model_param_raw.csv",header=TRUE)
 raw = raw %>% rename(agegroup_RAW = age_group)
 underlying_age_grouping <- c(0,9,19,29,39,49,59,69,110)
 
@@ -28,5 +28,5 @@ for (i in 1:length(setting_list)){
 }
 
 
-save(param_age, file = "1_inputs/param_age.Rdata")
+save(param_age, file = "01_inputs/param_age.Rdata")
 

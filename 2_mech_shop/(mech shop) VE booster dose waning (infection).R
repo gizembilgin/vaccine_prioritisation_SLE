@@ -6,10 +6,10 @@ require(ggpubr); require(readr); require(gridExtra); require(ggplot2); require(t
 
 ### Showing that Pfizer booster to CoronaVac EQ to Pfizer dose 2 waning
 #rm(list=ls())
-raw <- read.csv(file = '1_inputs/VE_acq.csv',header=TRUE)
+raw <- read.csv(file = '01_inputs/VE_acq.csv',header=TRUE)
 raw = raw %>% filter(dose == 3 & age_group == 'overall') %>% select(dose,days,VE) %>% mutate(label = 'Pfizer booster with CoronaVac primary schedule')
 
-raw_2 <- read.csv(file = '1_inputs/VE_Andrews_shape.csv',header=TRUE)
+raw_2 <- read.csv(file = '01_inputs/VE_Andrews_shape.csv',header=TRUE)
 raw_2 = raw_2 %>% filter(dose == 2 & vaccine_type == 'Pfizer' & strain == 'omicron') %>% mutate(days = week * 7, VE = VE/100,label = 'Pfizer second dose') %>% select(dose,days,VE,label)
 
 raw = rbind(raw,raw_2)
@@ -66,7 +66,7 @@ predicted_distribution = data.frame()
   
   
   ### Apply distribution
-  load(file = "1_inputs/VE_booster_estimates.Rdata")
+  load(file = "01_inputs/VE_booster_estimates.Rdata")
   
   imputed = data.frame()
     for (t in 1:length(unique(VE_booster_estimates$primary_if_booster))){
@@ -139,10 +139,10 @@ predicted_distribution = data.frame()
     mutate(strain = 'omicron', dose = 3, vaccine_type = "Pfizer") %>%
     select(strain,vaccine_type,dose,days,VE_days,waning,primary_if_booster)
   
-  load(file = '1_inputs/VE_waning_distribution.Rdata')
+  load(file = '01_inputs/VE_waning_distribution.Rdata')
   VE_waning_distribution = bind_rows(VE_waning_distribution,together)
   
-  save(VE_waning_distribution, file = '1_inputs/VE_waning_distribution.Rdata')
+  save(VE_waning_distribution, file = '01_inputs/VE_waning_distribution.Rdata')
   
   
   

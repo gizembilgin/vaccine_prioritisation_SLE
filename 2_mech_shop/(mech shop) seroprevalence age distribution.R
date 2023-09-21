@@ -4,7 +4,7 @@
 ### Creates: seroprev.
 #_________________________________________________________________________________________________________________________________________________________________________
 
-seroprev_raw = read.csv("1_inputs/seroprevalence_RAW.csv",header=TRUE)
+seroprev_raw = read.csv("01_inputs/seroprevalence_RAW.csv",header=TRUE)
 setting = "SLE"
 
 
@@ -62,7 +62,7 @@ seroprev = workshop %>%
   mutate(year = 2021, setting = "SLE") %>%
   select(year,setting,age_group,seroprev)
 
-save(seroprev, file = "1_inputs/seroprev.Rdata")
+save(seroprev, file = "01_inputs/seroprev.Rdata")
 
 rm(check,workshop,seroprev_raw,factor,
    pop_MODEL,pop_SERO)

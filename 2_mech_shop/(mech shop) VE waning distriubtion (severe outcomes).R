@@ -6,7 +6,7 @@ require(ggpubr); require(readr); require(gridExtra); require(ggplot2); require(t
 
 
 ###(1/3) Load distribution
-raw <- read.csv(file = '1_inputs/VE_severe_outcomes.csv',header=TRUE)
+raw <- read.csv(file = '01_inputs/VE_severe_outcomes.csv',header=TRUE)
 
 ### INITIAL VISULALISATION 
 plot1 = ggplot(data = raw[raw$dose == 2,]) + 
@@ -113,7 +113,7 @@ ggplot(data = raw[raw$age_group == 'overall',]) +
         axis.line = element_line(color = 'black'))
 
 predicted_distribution_SO = predicted_distribution
-save(predicted_distribution_SO, file = '1_inputs/VE_predicted_distribution_SO.Rdata')
+save(predicted_distribution_SO, file = '01_inputs/VE_predicted_distribution_SO.Rdata')
 
 
 
@@ -146,8 +146,8 @@ apply_distribution = apply_distribution %>%
 
 
 #(B) apply to point estimates
-load(file = "1_inputs/VE_estimates_imputed.Rdata")
-load(file = "1_inputs/VE_booster_estimates.Rdata")
+load(file = "01_inputs/VE_estimates_imputed.Rdata")
+load(file = "01_inputs/VE_booster_estimates.Rdata")
 
 point_estimates = VE_estimates_imputed %>% 
   filter(outcome_family == 'severe_outcome' & !(vaccine_type == 'Pfizer' & dose == 3)) %>%
@@ -200,6 +200,6 @@ no_waning = together %>% mutate(waning = FALSE) %>%
 
 
 VE_waning_distribution_SO = rbind(waning,no_waning) %>% select(strain, vaccine_type,primary_if_booster, dose, outcome,days,VE_days,waning)
-save(VE_waning_distribution_SO, file = '1_inputs/VE_waning_distribution_SO.Rdata')
+save(VE_waning_distribution_SO, file = '01_inputs/VE_waning_distribution_SO.Rdata')
 
 

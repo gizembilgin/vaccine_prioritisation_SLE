@@ -7,7 +7,7 @@
 discounting_rate = 0
 
 ##### (1/7) Load population-level wild-type estimate of severe outcomes
-severe_outcome_0 <- read.csv('1_inputs/severe_outcome_country_level.csv')
+severe_outcome_0 <- read.csv('01_inputs/severe_outcome_country_level.csv')
 severe_outcome_0$percentage = severe_outcome_0$percentage/100 #make it between 0-1
 severe_outcome_0 <- severe_outcome_0[severe_outcome_0$outcome %in% c('death','severe_disease','hosp') &
                                        severe_outcome_0$country == setting
@@ -16,9 +16,9 @@ severe_outcome_0 <- severe_outcome_0[severe_outcome_0$outcome %in% c('death','se
 
 
 #####(2/7) Load variant-specific multipliers
-workshop <- read.csv('1_inputs/severe_outcome_variant_multiplier.csv')
+workshop <- read.csv('01_inputs/severe_outcome_variant_multiplier.csv')
 #<interlude for omicron>
-workshop2 <- read.csv('1_inputs/severe_outcome_variant_multiplier_complex.csv') #omicron vs delta
+workshop2 <- read.csv('01_inputs/severe_outcome_variant_multiplier_complex.csv') #omicron vs delta
 omicron_basis = workshop[workshop$variant == 'delta',]
 omicron_basis$variant = 'omicron'
 omicron_basis$source = paste(omicron_basis$source,'/',workshop2$source)
@@ -55,7 +55,7 @@ for (VOC in c('omicron')){ #since we are only consideirng severe outcomes during
   
   
   #####(4/7) Calculating age-specific estimates of severe outcomes
-  load(file = '1_inputs/severe_outcome_age_distribution.Rdata') #adjusted values from Qatar
+  load(file = '01_inputs/severe_outcome_age_distribution.Rdata') #adjusted values from Qatar
   workshop = age_dn_severe_outcomes
   workshop = workshop[workshop$setting == setting,]
   
@@ -73,7 +73,7 @@ for (VOC in c('omicron')){ #since we are only consideirng severe outcomes during
   #"The average number of remaining years of life expected by a hypothetical cohort of individuals alive at age x 
   # who would be subject during the remaining of their lives to the mortality rates of a given period."
   # https://population.un.org/wpp/Download/Standard/Mortality/
-  lifeExpect <- read.csv('1_inputs/UN_life_expectancy_est_v2.csv') #updated 20/10/2022
+  lifeExpect <- read.csv('01_inputs/UN_life_expectancy_est_v2.csv') #updated 20/10/2022
   YLL_FINAL = lifeExpect %>%
     filter(setting == setting,
            year == '2022') %>%
@@ -121,4 +121,4 @@ ggplot() +
         axis.line = element_line(color = 'black'))
 #_______________________________________________________________________________
 
-save(severe_outcome_FINAL, file = "1_inputs/severe_outcome_FINAL.Rdata")
+save(severe_outcome_FINAL, file = "01_inputs/severe_outcome_FINAL.Rdata")

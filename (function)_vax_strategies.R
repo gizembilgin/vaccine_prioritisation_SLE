@@ -38,7 +38,7 @@ vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical 
   ### IMPORTS
   vax_strategy_vaccine_interval = round(vax_strategy_vaccine_interval)
   
-  prioritisation_csv <- read.csv("1_inputs/prioritisation_strategies.csv",header=TRUE)
+  prioritisation_csv <- read.csv("01_inputs/prioritisation_strategies.csv",header=TRUE)
   
   if (vax_delivery_group %in% c('universal','general_public')){ this_risk_group = 'general_public'
   } else if (vax_delivery_group == 'at_risk'){ this_risk_group = risk_group_name}

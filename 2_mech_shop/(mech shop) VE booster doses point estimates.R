@@ -9,7 +9,7 @@
 require(ggpubr); require(readr);require(ggplot2); require(tidyverse)
 
 #####  Visualise estimates from IVAC living systematic review ##########4#########################################################################
-VE_raw <- read.csv("1_inputs/VE_WHO_forest_plot.csv",header=TRUE)
+VE_raw <- read.csv("01_inputs/VE_WHO_forest_plot.csv",header=TRUE)
 
 VE_raw = VE_raw %>% 
   filter(dose == 3 & vaccine_type == 'Pfizer') %>% 
@@ -136,7 +136,7 @@ VE_booster_estimates = VE_estimates %>%
     
   ))
 
-save(VE_booster_estimates,file = "1_inputs/VE_booster_estimates.Rdata")
+save(VE_booster_estimates,file = "01_inputs/VE_booster_estimates.Rdata")
 
 
 

@@ -35,7 +35,7 @@ age_group_labels = c('0 to 4','5 to 9','10 to 17','18 to 29','30 to 44','45 to 5
 num_age_groups = J = length(age_group_labels)          
 age_group_order = data.frame(age_group = age_group_labels, age_group_num = seq(1:J))
 
-pop_orig <- read.csv("1_inputs/pop_estimates.csv", header=TRUE)
+pop_orig <- read.csv("01_inputs/pop_estimates.csv", header=TRUE)
 pop_setting_orig <- pop_orig %>%
   filter(country == setting)
 pop_setting <- pop_setting_orig %>%
@@ -51,12 +51,12 @@ pop_risk_group_dn = pop_setting %>%
   mutate(risk_group = 'general_public')
 
 if (num_risk_groups>1){
-  risk_dn = read.csv('1_inputs/risk_group_distribution.csv')
+  risk_dn = read.csv('01_inputs/risk_group_distribution.csv')
   
   if(risk_group_name %in% c('adults_with_comorbidities')){
     risk_dn = risk_dn[risk_dn$risk_group_name == risk_group_name,]
   } else if (risk_group_name %in% c('pregnant_women')){
-    load(file = "1_inputs/prevalence_pregnancy.Rdata")
+    load(file = "01_inputs/prevalence_pregnancy.Rdata")
     risk_dn = prevalence_pregnancy
   } else {
     stop('risk_group_name not a valid value')
@@ -161,7 +161,7 @@ rm(contact_all, contact_matrix_setting, sum_1, sum_2,
 
 ###(3/5) Live updates of cases
 if (TOGGLE_websource_data == "off"){
-  load(file = "1_inputs/case_history.Rdata")
+  load(file = "01_inputs/case_history.Rdata")
 } else {
   workshop_cases <- readr::read_csv("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv")
   workshop_cases = workshop_cases[workshop_cases$'Country/Region' == setting_long,]
@@ -191,7 +191,7 @@ if (TOGGLE_websource_data == "off"){
   #         axis.line = element_line(color = 'black'))
   
   rm(workshop, workshop_cases)
-  save(case_history, file = "1_inputs/case_history.Rdata")
+  save(case_history, file = "01_inputs/case_history.Rdata")
 }
 #______________________________________________________________________________________________________________________________________
 
@@ -210,7 +210,7 @@ vaxCovDelay = vaxCovDelay %>%
 
 ##(i/iii) Load and clean data _________________________________________________
 if (TOGGLE_websource_data == "off"){
-  load(file = "1_inputs/vaccination_history_POP.Rdata")
+  load(file = "01_inputs/vaccination_history_POP.Rdata")
   if (fitting == "off"){
     vaccination_history_POP <- vaccination_history_POP %>% filter(date <= date_start)
   }
@@ -294,7 +294,7 @@ if (TOGGLE_websource_data == "off"){
   
   
   ### Load data on vaccine supply in from African CDC Dashboard https://africacdc.org/covid-19-vaccination/ (last update 23/09/2022)
-  setting_vaccine <- read.csv("1_inputs/vaccine_setting_history.csv",header=TRUE)
+  setting_vaccine <- read.csv("01_inputs/vaccine_setting_history.csv",header=TRUE)
   setting_vaccine$last_update = as.Date(setting_vaccine$last_update,format = '%d/%m/%Y')
   setting_vaccine <- setting_vaccine %>%
     filter(setting == setting & last_update == max(setting_vaccine$last_update))
@@ -463,7 +463,7 @@ if (TOGGLE_websource_data == "off"){
     vaccination_history_POP = vaccination_history_POP %>% filter(date <= date_start)
   }
   ##_____________________________________________________________________________
-  save(vaccination_history_POP,file = "1_inputs/vaccination_history_POP.Rdata")
+  save(vaccination_history_POP,file = "01_inputs/vaccination_history_POP.Rdata")
   rm(workshop, timing_check, workshop_dose1, workshop_dose2, vaccination_history_3, vaccination_history_2, vaccination_history, setting_vaccine, setting_vaccine_2)
 }
   
@@ -621,7 +621,7 @@ if(length(unique(timing_check$date))>0){stop('Vaccine doses 2 delivered before v
 #https://github.com/OxCGRT/covid-policy-tracker/blob/master/documentation/codebook.md
 
 if (TOGGLE_websource_data == "off"){
-  load(file = "1_inputs/NPI_estimates.Rdata")
+  load(file = "01_inputs/NPI_estimates.Rdata")
 } else {
   ### Static toggles
   NPI_toggle = 'contain_health'   #choice of NPI metric: contain_health, stringency
@@ -650,7 +650,7 @@ if (TOGGLE_websource_data == "off"){
   #ggplot(NPI_estimates) + geom_line(aes(date,NPI))
   
   rm(workshop,NPI_toggle)
-  save(NPI_estimates, file = "1_inputs/NPI_estimates.Rdata")
+  save(NPI_estimates, file = "01_inputs/NPI_estimates.Rdata")
 }
 
 #______________________________________________________________________________________________________________________________________

@@ -37,7 +37,7 @@ booster_strategy <- function(
   ### IMPORTS
   booster_strategy_vaccine_interval = round(booster_strategy_vaccine_interval)
   if (booster_strategy_vaccine_interval < 60){warning('Are you sure that there is less than 2 months between primary and booster doses?')}
-  prioritisation_csv <- read.csv("1_inputs/prioritisation_strategies.csv",header=TRUE)
+  prioritisation_csv <- read.csv("01_inputs/prioritisation_strategies.csv",header=TRUE)
   
   if (booster_strategy_vaccine_type == "Johnson & Johnson" ){booster_dose_number = 2
   } else{  booster_dose_number = 3}

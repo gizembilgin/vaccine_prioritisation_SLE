@@ -133,11 +133,11 @@ if (new_variant_check == "off"){
   # }
   
   if (sensitivity_analysis_2022 == 'on'){
-    save(fitted_results, file = '1_inputs/fitted_results_SA_2022.Rdata')
+    save(fitted_results, file = '01_inputs/fitted_results_SA_2022.Rdata')
   } else{
     fitted_max_date = date_now-1  #incidence log always missed in first day of model
-    save(fitted_max_date,file = '1_inputs/last_fit_date.Rdata')
-    save(fitted_results, file = '1_inputs/fitted_results.Rdata')
+    save(fitted_max_date,file = '01_inputs/last_fit_date.Rdata')
+    save(fitted_results, file = '01_inputs/fitted_results.Rdata')
   }
 }
 #______________________________________________________________________________________________________________

@@ -11,7 +11,7 @@ if (VE_loop == 0){
     VE_waning_distribution = save_VE_waning_distribution
   }
 
-  load( file = '1_inputs/VE_waning_distribution_SO.Rdata')
+  load( file = '01_inputs/VE_waning_distribution_SO.Rdata')
   VE_waning_distribution_SO = VE_waning_distribution_SO %>% filter(waning == waning_toggle_severe_outcome )
   VE_waning_distribution = bind_rows(VE_waning_distribution,VE_waning_distribution_SO); rm(VE_waning_distribution_SO)
   
@@ -25,7 +25,7 @@ if (VE_loop == 0){
   
 } else if (VE_loop == 1 & 'VE_older_adults' %in% names(sensitivity_analysis_toggles)){
   #Note: VE_loop == 2 (comorb) will use this same dn
-  load( file = '1_inputs/SA_VE_older_muted_SO.Rdata')
+  load( file = '01_inputs/SA_VE_older_muted_SO.Rdata')
   VE_waning_distribution_SO = SA_VE_older_muted_SO %>% filter(waning == waning_toggle_severe_outcome )
   #VE_waning_distribution = bind_rows(save_VE_waning_distribution,VE_waning_distribution_SO)
   VE_waning_distribution = VE_waning_distribution_SO; rm(VE_waning_distribution_SO)
@@ -91,7 +91,7 @@ if ('VE_adults_comorb' %in% names(sensitivity_analysis_toggles)){
 
 
 #(B/C) 
-load(file = '1_inputs/severe_outcome_FINAL.Rdata')
+load(file = '01_inputs/severe_outcome_FINAL.Rdata')
 if (risk_group_toggle == "on"){
   #if risk-group included, then adjust general population incidence rate so pop-level estimates stay the same
 

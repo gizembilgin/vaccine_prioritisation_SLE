@@ -8,7 +8,7 @@
 require(ggpubr); require(readr);require(ggplot2); require(tidyverse)
 
 ##### (1/2) Inital estimates from IVAC living systematic review ##########4#########################################################################
-VE_estimates <- read.csv("1_inputs/VE_WHO_forest_plot.csv",header=TRUE)
+VE_estimates <- read.csv("01_inputs/VE_WHO_forest_plot.csv",header=TRUE)
 colnames(VE_estimates)
 
 VE_estimates = VE_estimates  %>% select(strain, vaccine_type, dose, outcome,VE,lower_est,upper_est)
@@ -345,6 +345,6 @@ plot_VE_point_estimates = ggarrange(plot_list[[1]],plot_list[[4]],plot_list[[3]]
                                     legend="bottom")
 plot_VE_point_estimates
 
-save(VE_estimates_imputed,file = "1_inputs/VE_estimates_imputed.Rdata")
+save(VE_estimates_imputed,file = "01_inputs/VE_estimates_imputed.Rdata")
 
 
