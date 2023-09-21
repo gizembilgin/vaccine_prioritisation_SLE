@@ -585,7 +585,7 @@ timing_check = workshop_dose1 %>%
   rename(dose1_avaliable = cum_doses)
 
 timing_check = workshop_dose2 %>%
-  left_join(timing_check) %>%
+  left_join(timing_check,by = join_by(date, vaccine_type, vaccine_mode, dose, age_group, risk_group)) %>%
   filter(cum_doses>0) %>%
   filter(dose1_avaliable < cum_doses)
 

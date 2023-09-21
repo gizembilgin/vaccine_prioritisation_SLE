@@ -32,7 +32,9 @@ pop_SERO = pop_SERO%>%
 
 
 #(C) check that age-specific aligns with pop-level
-check = SLE_age %>% left_join(pop_SERO) %>% select(agegroup_SERO,seroprev,percentage) %>%
+check = SLE_age %>% 
+  left_join(pop_SERO,by = join_by(agegroup_SERO)) %>% 
+  select(agegroup_SERO,seroprev,percentage) %>%
   mutate(interim = seroprev*percentage)
 sum(check$interim) # = 2.22 NOT reported 2.6 -> adjust!
 
@@ -44,7 +46,8 @@ SLE_age$seroprev = SLE_age$seroprev * factor #CHECKED: re-runing (C) gives 2.6 :
 
 
 #(E) translate to model age groups
-workshop = SLE_pop %>% left_join(SLE_age) %>% 
+workshop = SLE_pop %>% 
+  left_join(SLE_age,by = join_by(agegroup_SERO)) %>% 
   mutate(interim = seroprev*model_group_percent) %>%
   group_by(agegroup_MODEL) %>%
   summarise(seroprev = sum(interim))

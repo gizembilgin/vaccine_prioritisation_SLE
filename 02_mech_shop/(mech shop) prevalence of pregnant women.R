@@ -37,7 +37,7 @@ women_pop = women_pop %>%
   rename(pop_women = population) %>% 
   select(-population_thousands)
 pop_together = pop_setting_orig %>% 
-  left_join(women_pop) %>%
+  left_join(women_pop,by = join_by(age, country)) %>%
   mutate(female_prop = pop_women/population) %>%
   select(-pop_women)
 ggplot(data=pop_together) + 
@@ -62,7 +62,7 @@ ASFR_group_ratios = pop_together %>%
 
 Pop_ASFR = ASFR %>%
   rename(agegroup_ASFR = AGE)%>% 
-  left_join(ASFR_group_ratios) %>%
+  left_join(ASFR_group_ratios,by = join_by(agegroup_ASFR)) %>%
   mutate(ASFR = ASFR * female_prop) %>%
   select(agegroup_ASFR,ASFR) 
          
@@ -71,7 +71,7 @@ Pop_ASFR = ASFR %>%
 pop_conversion = pop_setting_orig %>%
   mutate(agegroup_ASFR = cut(age,breaks = ASFR_breaks, include.lowest = T, labels = ASFR_labels),
          agegroup_MODEL = cut(age,breaks = age_groups_num, include.lowest = T, labels = age_group_labels)) %>%
-  left_join(Pop_ASFR) %>%
+  left_join(Pop_ASFR,by = join_by(agegroup_ASFR)) %>%
   select(-agegroup_ASFR) %>%
   ungroup() %>% group_by(agegroup_MODEL) %>%
   mutate(agegroup_percent = population/sum(population),
