@@ -5,7 +5,7 @@
 #options(scipen = 100) #removes scientific notation
 #options(warn = 0) # = 2 when debugging
 
-vax_strategy <- function(vax_strategy_start_date,       # start of hypothetical vaccination program
+allocate_vaccine_doses <- function(vax_strategy_start_date,       # start of hypothetical vaccination program
                          vax_strategy_num_doses,        # num of doses avaliable
                          vax_strategy_roll_out_speed,   # doses delivered per day
                          vax_delivery_group = 'universal', #options = 'universal','at_risk','general_public'. NOTE: 'universal' assumes no risk groups and sets to 'general_public'

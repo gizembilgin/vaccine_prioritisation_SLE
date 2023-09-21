@@ -66,7 +66,7 @@ for (loop in 1:length(strain_list)){
 
 
 #### Reff ######################################################################
-Reff_time_step <- function(parameters,next_state){
+calculate_Reff <- function(parameters,next_state){
   
   #NGM_modified = NGM_R0 * NPI * (1-pre-existing immunity)
   

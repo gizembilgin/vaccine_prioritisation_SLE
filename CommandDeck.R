@@ -210,10 +210,10 @@ num_vax_classes = num_vax_doses*num_vax_types + 1 # + 1 for unvaccinated
 
 ##(B) Load functions
 source("03_functions/(function)_COVID_ODE.R")
-source("03_functions/(function)_VE_time_step.R")
-source("03_functions/(function)_rho_time_step.R")
-source("03_functions/(function)_vax_strategies.R")
-source("03_functions/(function)_vax_strategies_risk.R")
+source("03_functions/(function)_calculate_VE.R")
+source("03_functions/(function)_calculate_rho.R")
+source("03_functions/(function)_allocate_vaccine_doses.R")
+source("03_functions/(function)_allocate_vaccine_doses_by_risk.R")
 if (exists("VE_estimates_imputed") == FALSE){load(file='01_inputs/VE_estimates_imputed.Rdata')}
 
 

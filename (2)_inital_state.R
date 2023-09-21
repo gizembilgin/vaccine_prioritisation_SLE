@@ -13,7 +13,7 @@ vaccine_coverage_end_history = vaccination_history_TRUE %>%
 #(ii/iii) Add hypothetical campaign (if 'on') ____
 if (vax_strategy_toggle == "on" & vax_risk_strategy_toggle == "off"){
   vaccination_history_FINAL = 
-    vax_strategy(vax_strategy_start_date        = vax_strategy_toggles$vax_strategy_start_date,
+    allocate_vaccine_doses(vax_strategy_start_date        = vax_strategy_toggles$vax_strategy_start_date,
                  vax_strategy_num_doses         = vax_strategy_toggles$vax_strategy_num_doses,
                  vax_strategy_roll_out_speed    = vax_strategy_toggles$vax_strategy_roll_out_speed,
                  vax_age_strategy               = vax_strategy_toggles$vax_age_strategy,  
@@ -48,7 +48,7 @@ if (vax_strategy_toggle == "on" & vax_risk_strategy_toggle == "off"){
   }
   
   vaccination_history_FINAL = 
-   apply_risk_strategy(vax_risk_strategy     = apply_risk_strategy_toggles$vax_risk_strategy,            
+    allocate_vaccine_doses_by_risk(vax_risk_strategy     = apply_risk_strategy_toggles$vax_risk_strategy,            
                        vax_risk_proportion   = apply_risk_strategy_toggles$vax_risk_proportion,      
                        vax_doses_general     = apply_risk_strategy_toggles$vax_doses_general,      
                        vax_doses_risk        = apply_risk_strategy_toggles$vax_doses_risk,
@@ -97,21 +97,21 @@ if ('FROM_vaccine_type' %in% names(vaccination_history_FINAL)){
 ### sensitivity analysis - booster doses in 2023
 if (exists("booster_toggles") == FALSE){booster_toggles = list()}
 if (length(booster_toggles)>1){
-  source("03_functions/(function)_booster_dose_delivery.R")
+  source("03_functions/(function)_allocate_strategic_booster_doses.R")
 
   if (length(booster_prioritised_strategies)>1){
     source("03_functions/(function)_prioritised_booster_dose_delivery.R")
     
     vaccination_history_FINAL =
-      booster_strategy_prioritised(
+      allocate_strategic_and_prioritised_booster_doses(
         booster_risk_strategy = booster_prioritised_strategies$strategy,
         booster_risk_proportion = booster_prioritised_strategies$risk_proportion
       )
-    rm(booster_strategy_prioritised)
+    rm(allocate_strategic_and_prioritised_booster_doses)
     
   } else{
     vaccination_history_FINAL =
-      booster_strategy( booster_strategy_start_date = booster_toggles$start_date,       # start of hypothetical vaccination program
+      allocate_strategic_booster_doses( booster_strategy_start_date = booster_toggles$start_date,       # start of hypothetical vaccination program
                         booster_dose_allocation     = booster_toggles$dose_allocation,  # num of doses avaliable
                         booster_rollout_speed       = booster_toggles$rollout_speed,    # doses delivered per day
                         booster_delivery_risk_group = booster_toggles$delivery_risk_group,
@@ -120,7 +120,7 @@ if (length(booster_toggles)>1){
                         booster_strategy_vaccine_type = booster_toggles$vaccine_type,   # options: "Moderna","Pfizer","AstraZeneca","Johnson & Johnson","Sinopharm","Sinovac"
                         booster_strategy_vaccine_interval = booster_toggles$vaccine_interval
       )
-    rm(booster_strategy)
+    rm(allocate_strategic_booster_doses)
   }
 
 
@@ -291,8 +291,8 @@ VE_waning_distribution = VE_waning_distribution %>%
 VE_waning_distribution = rbind(VE_waning_distribution,workshop)
 
 if ((date_start - vaxCovDelay$delay[vaxCovDelay$dose == d])>= min(vaccination_history_POP$date)){
-  VE = VE_inital = VE_time_step(strain_inital,date_start,'any_infection')
-  #VE_onwards_inital <- VE_time_step(strain_inital,date_start,'transmission')
+  VE = VE_inital = calculate_VE(strain_inital,date_start,'any_infection')
+  #VE_onwards_inital <- calculate_VE(strain_inital,date_start,'transmission')
 }
 
 if (fitting == "off"){
@@ -558,7 +558,7 @@ if (fitting == "on"){
 
 ###### (5/5) calculate inital infection-derived protection (rho) & beta
 if (waning_toggle_rho_acqusition == TRUE ){
-  rho_inital = rho_time_step(date_start)
+  rho_inital = calculate_rho(date_start)
 } else{
   rho_inital = 0.95 #Chemaitelly et al. 2 week estimate
 }

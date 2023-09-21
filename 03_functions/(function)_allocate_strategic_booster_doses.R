@@ -9,7 +9,7 @@
 #options(warn = 0) # = 2 when debugging
 #NOTE: limitation that hypoth vaccine_type must be consistent with prev hypoth vaccine type!
 
-booster_strategy <- function(
+allocate_strategic_booster_doses <- function(
                          booster_strategy_start_date,       # start of hypothetical vaccination program
                          booster_dose_allocation,        # num of doses avaliable
                          booster_rollout_speed,   # doses delivered per day

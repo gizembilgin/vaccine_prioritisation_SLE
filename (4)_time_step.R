@@ -62,12 +62,12 @@ for (increments_number in 1:num_time_steps){
         
       #update VE
       if ((date_now - min(vaxCovDelay$delay))>= min(vaccination_history_FINAL$date)){
-        parameters$VE = VE_time_step(strain_now,date_now,'any_infection')
+        parameters$VE = calculate_VE(strain_now,date_now,'any_infection')
       }
       
       #update rho
       if (waning_toggle_rho_acqusition == TRUE ){
-        parameters$rho = rho_time_step(date_now)
+        parameters$rho = calculate_rho(date_now)
         rho = parameters$rho
       }
       
@@ -320,7 +320,7 @@ for (increments_number in 1:num_time_steps){
   if (fitting == "on"){
     if (fitting == "off" & increments_number == 1){
     } else{
-      Reff <- Reff_time_step(parameters,next_state)
+      Reff <- calculate_Reff(parameters,next_state)
       Reff_tracker = rbind(Reff_tracker,Reff)
     }
     
@@ -336,9 +336,9 @@ for (increments_number in 1:num_time_steps){
     }
   }
   }
-} ### END INCREMENT (#incidence log moved within loop to allow rho_time_step to access)
+} ### END INCREMENT (#incidence log moved within loop to allow calculate_rho to access)
 if (fitting == "off"){
-  rm(fitted_incidence_log, sol_log, covidODE, rho_time_step, Reff_time_step, NPI, NGM_R0)
+  rm(fitted_incidence_log, sol_log, covidODE, calculate_rho, calculate_Reff, NPI, NGM_R0)
 }
 
 check <- sol_log_unedited

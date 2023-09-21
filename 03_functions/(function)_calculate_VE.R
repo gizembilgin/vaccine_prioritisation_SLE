@@ -1,6 +1,6 @@
 ### This function calculates the population-level vaccine effectiveness at any given time by vaccine_type, dose and age_group
 
-VE_time_step <- function(strain_now,date_now,outcome){
+calculate_VE <- function(strain_now,date_now,outcome){
   
   #(1) load VE_distribution
   VE_distribution <- VE_waning_distribution[VE_waning_distribution$outcome == outcome &

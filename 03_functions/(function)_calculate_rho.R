@@ -76,7 +76,7 @@ ggplot() + geom_point(data = intro_raw, aes(x=days,y=percentage)) +
 rho_acq = rho_dn %>% filter(outcome == 'symptomatic_disease')
 
 # This function calculates the population-level infection-derived protection against reinfection at any given time by age_group
-rho_time_step <- function(date_now){
+calculate_rho <- function(date_now){
   
   #create data set of historical cases by day in recovery class
   if (exists("incidence_log") == FALSE){ incidence_log = data.frame() }
@@ -96,7 +96,7 @@ rho_time_step <- function(date_now){
     mutate(days = round(as.numeric(date_now - date)))
   workshop$date = as.Date(workshop$date, '%Y-%m-%d')
   workshop = workshop %>% mutate(prop_window = daily_cases/sum(workshop$daily_cases))   
-  if (round(sum(workshop$prop_window),digits=5) != 1){stop('error in rho_time_step')}
+  if (round(sum(workshop$prop_window),digits=5) != 1){stop('error in calculate_rho')}
   
   ggplot(workshop) + geom_line(aes(date,prop_window)) 
   #______________________

@@ -1,6 +1,6 @@
-### This function allocates future doses by risk_group using repeated calls of the vax_strategy() function
+### This function allocates future doses by risk_group using repeated calls of the allocate_vaccine_doses() function
 
-apply_risk_strategy <- function(
+allocate_vaccine_doses_by_risk <- function(
     vax_risk_strategy,             # options: 'Y','N'
     vax_risk_proportion,           # value between 0-1 (equivalent to %) of doses prioritised to the at risk group
     vax_doses_general,             # number of doses delivered to general pop
@@ -80,7 +80,7 @@ apply_risk_strategy <- function(
     vax_strategy_toggles$vax_age_strategy = 'uniform'
   }
   
-  at_risk_delivery_outline = vax_strategy(vax_delivery_group = 'at_risk',
+  at_risk_delivery_outline = allocate_vaccine_doses(vax_delivery_group = 'at_risk',
                                           vax_dose_strategy              = vax_doses_risk,       
                                           vax_strategy_roll_out_speed    = speed_risk_group_rollout,            
                                           vax_strategy_max_expected_cov  = risk_group_acceptability,
@@ -155,7 +155,7 @@ apply_risk_strategy <- function(
   } 
   #<fin>
   
-  generalPublic_leftover_outline = vax_strategy(vax_delivery_group             = 'general_public',
+  generalPublic_leftover_outline = allocate_vaccine_doses(vax_delivery_group             = 'general_public',
                                                 vax_dose_strategy              = vax_doses_general,       
                                                 vax_strategy_roll_out_speed    = vax_strategy_toggles$vax_strategy_roll_out_speed,
                                                 vax_roll_out_speed_modifier    = limiter,

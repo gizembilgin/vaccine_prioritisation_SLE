@@ -48,7 +48,7 @@ if (waning_toggle_severe_outcome == TRUE){
     VE_tracker = data.frame()
     for (outcome in c('death','severe_disease')){
       for (day in 0:num_time_steps){
-        workshop = VE_time_step(strain_now,date_start+day,outcome)
+        workshop = calculate_VE(strain_now,date_start+day,outcome)
         workshop = workshop %>% mutate(date=day,
                                        outcome_VE=outcome)
         VE_tracker = rbind(VE_tracker,workshop)

@@ -1,6 +1,7 @@
-### This function allocates future doses by risk_group using repeated calls of the booster_strategy() function
+### This function allocates future doses by risk_group using repeated calls of the allocate_strategic_booster_doses() function
 
-booster_strategy_prioritised <- function(
+
+allocate_strategic_and_prioritised_booster_doses <- function(
     booster_risk_strategy,             # options: 'Y','N'
     booster_risk_proportion,           # value between 0-1 (equivalent to %) of doses prioritised to the at risk group
     risk_group_accessibility = FALSE, #TRUE means opportunistic vaccination possible for this risk group,
@@ -38,7 +39,7 @@ booster_strategy_prioritised <- function(
     speed_risk_group_rollout = round(sum(pop_high_risk$pop)/(365/12*4.2)) #median first antenatal care visit
   }
 
-  at_risk_delivery_outline = booster_strategy(booster_strategy_start_date = booster_toggles_import$start_date,       # start of hypothetical vaccination program
+  at_risk_delivery_outline = allocate_strategic_booster_doses(booster_strategy_start_date = booster_toggles_import$start_date,       # start of hypothetical vaccination program
                                               booster_dose_allocation     = booster_toggles_import$dose_allocation,  # num of doses avaliable
                                               
                                               booster_rollout_speed       = speed_risk_group_rollout,         # doses delivered per day
@@ -64,7 +65,7 @@ booster_strategy_prioritised <- function(
   
   
   ### BRANCH THREE: Distribute remaining doses to general population
-  generalPublic_leftover_outline = booster_strategy(booster_strategy_start_date = booster_toggles_import$start_date,       # start of hypothetical vaccination program
+  generalPublic_leftover_outline = allocate_strategic_booster_doses(booster_strategy_start_date = booster_toggles_import$start_date,       # start of hypothetical vaccination program
                    booster_dose_allocation     = booster_toggles_import$dose_allocation - sum(at_risk_delivery_outline$doses_delivered_this_date),  # num of doses avaliable
                    booster_rollout_speed       = booster_toggles_import$rollout_speed,         # doses delivered per day
                    booster_delivery_risk_group = "general_public",
