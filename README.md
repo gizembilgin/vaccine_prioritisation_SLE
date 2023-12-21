@@ -1,5 +1,5 @@
 # vaccine_prioritisation_SLE
- **Associated paper**: Modelling COVID-19 vaccination strategies in settings with low supply and limited rollout capacity - a case study in Sierra Leone [[see preprint](https://dx.doi.org/10.2139/ssrn.4284636)]
+ **Associated paper**: Modelling COVID-19 vaccination strategies in settings with low supply and limited rollout capacity - a case study in Sierra Leone - published in BMC Public Helath, see https://doi.org/10.1186/s12889-023-17374-0
 
 
 | Folder or script | Purpose | 
